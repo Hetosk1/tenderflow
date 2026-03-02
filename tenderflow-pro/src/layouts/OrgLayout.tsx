@@ -5,6 +5,7 @@ import { OrgSidebar } from "@/components/layouts/OrgSidebar";
 import { TopNavbar } from "@/components/layouts/TopNavbar";
 
 export default function OrgLayout() {
+  
   return (
     <div className="flex min-h-screen w-full bg-background">
       <OrgSidebar />

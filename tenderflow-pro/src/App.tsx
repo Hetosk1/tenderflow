@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 // Layouts
 import OrgLayout from "./layouts/OrgLayout";
 import TraderLayout from "./layouts/TraderLayout";
@@ -30,6 +32,8 @@ import TraderProfile from "./pages/trader/TraderProfile";
 
 import NotFound from "./pages/NotFound";
 
+
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,7 +49,11 @@ const App = () => (
           <Route path="/register" element={<Register />} />
 
           {/* Organization Area */}
-          <Route path="/org" element={<OrgLayout />}>
+          <Route path="/org" element={
+            <ProtectedRoute allowedRole="ORG">
+              <OrgLayout />
+            </ProtectedRoute>
+          }>
             <Route index element={<Navigate to="/org/dashboard" replace />} />
             <Route path="dashboard" element={<OrgDashboard />} />
             <Route path="create-tender" element={<CreateTender />} />
@@ -57,7 +65,11 @@ const App = () => (
           </Route>
 
           {/* Trader Area */}
-          <Route path="/trader" element={<TraderLayout />}>
+          <Route path="/trader" element={
+            <ProtectedRoute allowedRole="TRADER">
+              <TraderLayout />
+            </ProtectedRoute>
+          }>
             <Route index element={<Navigate to="/trader/dashboard" replace />} />
             <Route path="dashboard" element={<TraderDashboard />} />
             <Route path="browse" element={<BrowseTenders />} />

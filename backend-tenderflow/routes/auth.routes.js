@@ -72,7 +72,11 @@ authRouter.post("/login", async (_request, _response) => {
 
         const {email, password} = _request.body;
 
+        console.log("Email: " + email);
+        console.log("Password: " + password);
+
         const user = await UserModel.findOne({email});
+
 
         if(!user) {
             return _response.status(401).json({
@@ -80,6 +84,7 @@ authRouter.post("/login", async (_request, _response) => {
                 message: "Invalid credentials"
             });
         }
+
 
         const isMatchingPassword = await bcrypt.compare(password, user.password);
 
@@ -95,7 +100,10 @@ authRouter.post("/login", async (_request, _response) => {
         return _response.json({
             status: true,
             message: "Login successfull",
-            token
+            data: {
+                token: token,
+                user: user
+            } 
         });
 
     } catch (err) {

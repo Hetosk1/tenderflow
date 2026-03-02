@@ -6,18 +6,65 @@ import { Building2, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {toast} from 'sonner';
 
 export default function Login() {
+
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+
+
   const [showPass, setShowPass] = useState(false);
   const [role, setRole] = useState<"organization" | "trader">("organization");
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
+
     e.preventDefault();
-    if (role === "organization") {
-      navigate("/org/dashboard");
-    } else {
-      navigate("/trader/dashboard");
+
+    try {
+
+      setLoading(true);
+      setError("");
+
+      const _response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email, 
+          password
+        })
+      });
+
+
+      const _responseJson = await _response.json();
+      console.log(_responseJson);
+
+      if (!_response.ok) {
+        throw new Error(_responseJson.message || "Login failed");
+      }
+
+      localStorage.setItem("token", _responseJson.data.token);
+      console.log(localStorage.getItem('token'));
+
+
+
+      if (_responseJson.data.user.role === "ORG") {
+          navigate("/org/dashboard");
+      } else if (_responseJson.data.user.role === "TRADER") {
+          navigate("/trader/dashboard");
+      }
+
+    } catch(err: any) {
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +88,7 @@ export default function Login() {
         {/* Card */}
         <div className="bg-card rounded-xl shadow-card p-6 border border-border">
           {/* Role Toggle */}
-          <div className="flex rounded-lg bg-muted p-1 mb-5">
+          {/* <div className="flex rounded-lg bg-muted p-1 mb-5">
             {(["organization", "trader"] as const).map((r) => (
               <button
                 key={r}
@@ -55,7 +102,7 @@ export default function Login() {
                 {r === "organization" ? "Organization" : "Trader"}
               </button>
             ))}
-          </div>
+          </div> */}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">
@@ -66,11 +113,8 @@ export default function Login() {
                 id="email"
                 type="email"
                 placeholder="you@company.com"
-                defaultValue={
-                  role === "organization"
-                    ? "admin@apex.com"
-                    : "sarah@novatech.com"
-                }
+                value = {email} 
+                onChange={(e) => {setEmail(e.target.value)}}
                 className="h-9"
               />
             </div>
@@ -92,7 +136,8 @@ export default function Login() {
                   id="password"
                   type={showPass ? "text" : "password"}
                   placeholder="••••••••"
-                  defaultValue="password"
+                  value = {password} 
+                  onChange = {(e) => {setPassword(e.target.value)}}
                   className="h-9 pr-9"
                 />
                 <button
@@ -115,28 +160,7 @@ export default function Login() {
             </Button>
           </form>
 
-          {/* Quick demo links */}
-          <div className="mt-4 pt-4 border-t border-border space-y-1.5">
-            <p className="text-xs text-muted-foreground text-center mb-2">
-              Quick demo access
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full text-xs h-8"
-              onClick={() => navigate("/org/dashboard")}
-            >
-              Enter as Organization Demo
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full text-xs h-8"
-              onClick={() => navigate("/trader/dashboard")}
-            >
-              Enter as Trader Demo
-            </Button>
-          </div>
+          
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-4">
