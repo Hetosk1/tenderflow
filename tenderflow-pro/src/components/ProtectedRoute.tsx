@@ -7,7 +7,7 @@ interface ProtectedRouteProps  {
 }
 
 interface DecodedToken {
-    id: String;
+    id: string;
     role: "TRADER" | "ORG";
 }
 

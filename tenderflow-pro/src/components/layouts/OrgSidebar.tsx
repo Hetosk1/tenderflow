@@ -1,5 +1,5 @@
 // src/components/layouts/OrgSidebar.tsx — Organization sidebar navigation
-
+import { useState, useEffect } from "react";
 import { NavLink } from "@/components/NavLink";
 import {
   LayoutDashboard,
@@ -12,6 +12,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import { jwtDecode } from "jwt-decode";
+
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/org/dashboard", icon: LayoutDashboard },
   { label: "Create Tender", href: "/org/create-tender", icon: PlusCircle },
@@ -22,6 +24,36 @@ const NAV_ITEMS = [
 ];
 
 export function OrgSidebar() {
+
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+
+    async function fetchData () {
+      try {
+
+        const _response = await fetch("http://localhost:3000/auth/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+        const data = await _response.json()
+        console.log(data.data.email);
+        setData(data.data);
+
+      } catch(err) {
+
+        console.log(err);
+
+      }
+    }
+
+    fetchData();
+    
+  }, []); // runs only once
+
   return (
     <aside className="w-60 min-h-screen bg-[hsl(var(--sidebar-background))] flex flex-col shrink-0">
       {/* Logo */}
@@ -50,12 +82,12 @@ export function OrgSidebar() {
           <NavLink
             key={item.href}
             to={item.href}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(var(--sidebar-foreground))/70] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-all duration-150 group"
-            activeClassName="!text-sidebar-primary-foreground !bg-primary font-medium"
+            activeClassName="bg-[hsl(var(--sidebar-active-bg))] text-[hsl(var(--sidebar-active-fg))] font-medium"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(var(--sidebar-foreground))] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-all duration-150"
           >
             <item.icon className="w-4 h-4 shrink-0" />
             <span className="flex-1">{item.label}</span>
-            <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
+            <ChevronRight className="w-3 h-3 opacity-50" />
           </NavLink>
         ))}
       </nav>
@@ -68,10 +100,10 @@ export function OrgSidebar() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-[hsl(var(--sidebar-foreground))] truncate">
-              Apex Enterprises
             </p>
-            <p className="text-[10px] text-[hsl(var(--sidebar-foreground))/50] truncate">
-              admin@apex.com
+            <p className="text-[10px] text-[hsl(var(--sidebar-foreground))] truncate">
+              hello
+              {/* {data.email} */}
             </p>
           </div>
         </div>

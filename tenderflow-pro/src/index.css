@@ -28,12 +28,13 @@
     --primary-muted: 217 60% 75%;
 
     /* Sidebar */
-    --sidebar-bg: 222 47% 11%;
-    --sidebar-fg: 210 40% 85%;
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-active-bg: 217 91% 55%;
     --sidebar-active-fg: 0 0% 100%;
     --sidebar-hover-bg: 222 40% 18%;
     --sidebar-border: 222 40% 16%;
+    --sidebar-accent: 222 40% 18%;
 
     /* Secondary */
     --secondary: 210 20% 96%;

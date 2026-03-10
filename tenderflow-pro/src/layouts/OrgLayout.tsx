@@ -1,14 +1,21 @@
 // src/layouts/OrgLayout.tsx — Layout wrapper for Organization area
 
+import {useState, useEffect} from 'react';
+
 import { Outlet } from "react-router-dom";
 import { OrgSidebar } from "@/components/layouts/OrgSidebar";
 import { TopNavbar } from "@/components/layouts/TopNavbar";
 
+type OrgSidebarProps = {
+  data: any
+}
+
 export default function OrgLayout() {
+
   
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <OrgSidebar />
+      <OrgSidebar/>
       <div className="flex flex-col flex-1 min-w-0">
         <TopNavbar />
         <main className="flex-1 p-6 animate-fade-in">
