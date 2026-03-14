@@ -90,6 +90,7 @@ export function OrgSidebar(propsdata: any) {
             to={item.href}
             activeClassName="bg-[hsl(var(--sidebar-active-bg))] text-[hsl(var(--sidebar-active-fg))] font-medium"
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(var(--sidebar-foreground))] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-all duration-150"
+            
           >
             <item.icon className="w-4 h-4 shrink-0" />
             <span className="flex-1">{item.label}</span>

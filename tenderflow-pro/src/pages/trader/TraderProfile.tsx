@@ -1,5 +1,5 @@
 // src/pages/trader/TraderProfile.tsx — Trader's profile page
-
+import { useOutletContext } from "react-router-dom";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Star, Award, FileCheck } from "lucide-react";
 
+type TraderContext = {
+  data: any
+};
 export default function TraderProfile() {
+  const { data } = useOutletContext<TraderContext>();
+  console.log(data);
+
   return (
     <div className="max-w-2xl space-y-5 animate-fade-in">
       <PageHeader title="My Profile" description="Manage your trader profile and credentials" />

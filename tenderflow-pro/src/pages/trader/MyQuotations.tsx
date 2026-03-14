@@ -1,14 +1,22 @@
 // src/pages/trader/MyQuotations.tsx — Trader's submitted quotations
-
+import { useOutlet, useOutletContext } from "react-router-dom";
 import { StatusBadge } from "@/components/StatusBadge";
 import { PageHeader } from "@/components/PageHeader";
 import { MOCK_QUOTATIONS } from "@/data/mockData";
 import { Clock, Building2, DollarSign, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+type TraderContext = {
+  data: any
+};
+
+
 const traderQuotations = MOCK_QUOTATIONS.filter((q) => q.traderId === "tr1");
 
 export default function MyQuotations() {
+  const { data } = useOutletContext<TraderContext>();
+  console.log(data);
+
   return (
     <div className="space-y-5 animate-fade-in">
       <PageHeader

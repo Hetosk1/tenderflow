@@ -1,7 +1,7 @@
 // src/pages/trader/BrowseTenders.tsx — Browse all open tenders
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -37,7 +37,15 @@ const CATEGORIES = [
   "Legal Services",
 ];
 
+type TraderContext = {
+  data: any
+};
+
 export default function BrowseTenders() {
+
+  const { data } = useOutletContext<TraderContext>();
+  console.log(data);
+
   const [view, setView] = useState<"grid" | "list">("grid");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");

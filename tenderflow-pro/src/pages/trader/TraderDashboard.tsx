@@ -1,6 +1,6 @@
 // src/pages/trader/TraderDashboard.tsx — Trader's dashboard
 
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import {
   FileCheck,
   Award,
@@ -15,6 +15,10 @@ import { StatsCard } from "@/components/StatsCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { PageHeader } from "@/components/PageHeader";
 import { MOCK_QUOTATIONS, MOCK_TENDERS } from "@/data/mockData";
+
+type TraderContext = {
+  data: any
+}
 
 const STATS = [
   {
@@ -50,6 +54,10 @@ const STATS = [
 const traderQuotations = MOCK_QUOTATIONS.filter((q) => q.traderId === "tr1");
 
 export default function TraderDashboard() {
+
+  const { data } = useOutletContext<TraderContext>();
+  console.log(data);
+
   const openTenders = MOCK_TENDERS.filter((t) => t.status === "open").slice(0, 3);
 
   return (

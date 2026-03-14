@@ -1,7 +1,7 @@
 // src/pages/trader/TraderTenderDetails.tsx — Trader view of a specific tender
 
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext, useOutlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { MOCK_TENDERS } from "@/data/mockData";
@@ -18,7 +18,13 @@ import {
 } from "lucide-react";
 import { SubmitQuotationModal } from "@/components/trader/SubmitQuotationModal";
 
+type TraderConext = {
+  data: any
+};
+
 export default function TraderTenderDetails() {
+  const { data } = useOutletContext<TraderConext>();
+  console.log(data);
   const { id } = useParams();
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);

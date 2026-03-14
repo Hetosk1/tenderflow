@@ -17,7 +17,7 @@ const NAV_ITEMS = [
   { label: "Profile", href: "/trader/profile", icon: User },
 ];
 
-export function TraderSidebar() {
+export function TraderSidebar(propsdata: any) {
   return (
     <aside className="w-60 min-h-screen bg-[hsl(var(--sidebar-background))] flex flex-col shrink-0">
       {/* Logo */}
@@ -46,7 +46,7 @@ export function TraderSidebar() {
           <NavLink
             key={item.href}
             to={item.href}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(var(--sidebar-foreground))/70] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-all duration-150 group"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(var(--sidebar-foreground))] hover:text-[hsl(var(--sidebar-foreground))] hover:bg-[hsl(var(--sidebar-accent))] transition-all duration-150 group"
             activeClassName="!text-sidebar-primary-foreground !bg-primary font-medium"
           >
             <item.icon className="w-4 h-4 shrink-0" />
@@ -60,14 +60,13 @@ export function TraderSidebar() {
       <div className="px-3 py-4 border-t border-[hsl(var(--sidebar-border))]">
         <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[hsl(var(--sidebar-accent))] cursor-pointer transition-colors">
           <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center shrink-0">
-            <span className="text-xs font-semibold text-white">NT</span>
+            <span className="text-xs font-semibold text-primary-foreground">
+              {propsdata.propsdata.name?.split(" ").map(word => word[0]).join("")}
+            </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-[hsl(var(--sidebar-foreground))] truncate">
-              NovaTech Solutions
-            </p>
-            <p className="text-[10px] text-[hsl(var(--sidebar-foreground))/50] truncate">
-              sarah@novatech.com
+            <p className="text-[10px] text-[hsl(var(--sidebar-foreground))] truncate">
+              {propsdata.propsdata.email}
             </p>
           </div>
         </div>
