@@ -1,11 +1,19 @@
 // src/pages/org/OrgSettings.tsx — Organization settings placeholder
-
+import { useOutletContext} from 'react-router-dom';
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+type OrgContext = { 
+  data: any
+};
+
 export default function OrgSettings() {
+
+  const { data } = useOutletContext<OrgContext>()
+  console.log(data);
+
   return (
     <div className="max-w-xl space-y-5 animate-fade-in">
       <PageHeader title="Settings" description="Manage your organization profile and preferences" />

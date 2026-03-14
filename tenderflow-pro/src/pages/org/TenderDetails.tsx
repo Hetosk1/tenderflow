@@ -1,7 +1,7 @@
 // src/pages/org/TenderDetails.tsx — Org view of a specific tender with quotations
 
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { PageHeader } from "@/components/PageHeader";
@@ -25,8 +25,15 @@ import { Quotation } from "@/types";
 import { ComparisonModal } from "@/components/org/ComparisonModal";
 
 type Tab = "quotations" | "details" | "activity";
+type OrgContext = {
+  data: any
+};
 
 export default function TenderDetails() {
+
+  const { data } = useOutletContext<OrgContext>();
+  console.log(data);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("quotations");

@@ -12,14 +12,47 @@ type OrgSidebarProps = {
 
 export default function OrgLayout() {
 
+  console.log("hello world");
+
+  const [data, setData] = useState<any>({});
+
+  useEffect(() => {
+
+    async function fetchData () {
+      try {
+
+        const _response = await fetch("http://localhost:3000/auth/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+        const data = await _response.json()
+        console.log(data.data.email);
+        setData(data.data);
+
+      } catch(err) {
+
+        console.log(err);
+
+      }
+    }
+
+    fetchData();
+    
+  }, []);
+
   
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <OrgSidebar/>
+      <OrgSidebar propsdata={data}/>
       <div className="flex flex-col flex-1 min-w-0">
         <TopNavbar />
         <main className="flex-1 p-6 animate-fade-in">
-          <Outlet />
+          <Outlet context={{
+            data 
+          }} />
         </main>
       </div>
     </div>

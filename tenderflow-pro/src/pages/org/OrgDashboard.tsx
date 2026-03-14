@@ -1,6 +1,6 @@
 // src/pages/org/OrgDashboard.tsx — Organization dashboard
 
-import { Link } from "react-router-dom";
+import { Link, useOutletContext} from "react-router-dom";
 import {
   FileText,
   InboxIcon,
@@ -47,8 +47,15 @@ const STATS = [
   },
 ];
 
+type OrgContext = {
+  data: any
+}
+
 export default function OrgDashboard() {
   const recentTenders = MOCK_TENDERS.slice(0, 4);
+
+  const { data } = useOutletContext<OrgContext>();
+  console.log(data);
 
   return (
     <div className="space-y-6 animate-fade-in">

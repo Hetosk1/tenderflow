@@ -1,4 +1,4 @@
-// src/components/layouts/OrgSidebar.tsx — Organization sidebar navigation
+// src/components/layouts/orgsidebar.tsx — organization sidebar navigation
 import { useState, useEffect } from "react";
 import { NavLink } from "@/components/NavLink";
 import {
@@ -23,36 +23,42 @@ const NAV_ITEMS = [
   { label: "Settings", href: "/org/settings", icon: Settings },
 ];
 
-export function OrgSidebar() {
+export function OrgSidebar(propsdata: any) {
 
-  const [data, setData] = useState<any>(null);
+  console.log("PropsData: ")
+  console.log(propsdata);
+  console.log(propsdata.propsdata.email)
+  console.log("PropsData end");
 
-  useEffect(() => {
+  // const [data, setData] = useState<any>({});
 
-    async function fetchData () {
-      try {
+  // useEffect(() => {
 
-        const _response = await fetch("http://localhost:3000/auth/me", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
-        });
-        const data = await _response.json()
-        console.log(data.data.email);
-        setData(data.data);
+  //   async function fetchData () {
+  //     try {
 
-      } catch(err) {
+  //       const _response = await fetch("http://localhost:3000/auth/me", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "Authorization": "Bearer " + localStorage.getItem("token")
+  //         }
+  //       });
+  //       const data = await _response.json()
+  //       console.log(data.data.email);
+  //       setData(data.data);
 
-        console.log(err);
+  //     } catch(err) {
 
-      }
-    }
+  //       console.log(err);
 
-    fetchData();
+  //     }
+  //   }
+
+  //   fetchData();
     
-  }, []); // runs only once
+  // }, []); // runs only once
+  
 
   return (
     <aside className="w-60 min-h-screen bg-[hsl(var(--sidebar-background))] flex flex-col shrink-0">
@@ -96,14 +102,17 @@ export function OrgSidebar() {
       <div className="px-3 py-4 border-t border-[hsl(var(--sidebar-border))]">
         <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[hsl(var(--sidebar-accent))] cursor-pointer transition-colors">
           <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
-            <span className="text-xs font-semibold text-primary-foreground">AE</span>
+            <span className="text-xs font-semibold text-primary-foreground">
+              {propsdata.propsdata.name?.split(" ").map(word => word[0]).join("")}
+            </span>
+
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-[hsl(var(--sidebar-foreground))] truncate">
             </p>
             <p className="text-[10px] text-[hsl(var(--sidebar-foreground))] truncate">
-              hello
-              {/* {data.email} */}
+              {/* hello */}
+              {propsdata.propsdata.email}
             </p>
           </div>
         </div>

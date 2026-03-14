@@ -1,7 +1,7 @@
 // src/pages/org/MyTenders.tsx — List of organization's tenders
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -33,7 +33,15 @@ const STATUS_FILTERS: { label: string; value: TenderStatus | "all" }[] = [
   { label: "Closed", value: "closed" },
 ];
 
+type OrgContext = {
+  data: any
+};
+
 export default function MyTenders() {
+
+  const { data } = useOutletContext<OrgContext>();
+  console.log(data);
+
   const [activeFilter, setActiveFilter] = useState<TenderStatus | "all">("all");
   const [search, setSearch] = useState("");
 

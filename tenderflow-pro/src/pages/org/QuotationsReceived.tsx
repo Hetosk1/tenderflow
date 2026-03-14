@@ -5,9 +5,17 @@ import { PageHeader } from "@/components/PageHeader";
 import { MOCK_QUOTATIONS } from "@/data/mockData";
 import { Star, Clock, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+
+type OrgContext = {
+  data: any
+};
 
 export default function QuotationsReceived() {
+
+  const { data } = useOutletContext<OrgContext>();
+  console.log(data);
+
   return (
     <div className="space-y-5 animate-fade-in">
       <PageHeader

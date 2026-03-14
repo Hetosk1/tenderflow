@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-type Role = "organization" | "trader";
+type Role = "ORG" | "TRADER";
 
 const ROLE_OPTIONS: {
   value: Role;
@@ -18,14 +18,14 @@ const ROLE_OPTIONS: {
   perks: string[];
 }[] = [
   {
-    value: "organization",
+    value: "ORG",
     label: "Organization",
     description: "Post tenders and receive competitive quotations",
     icon: Building2,
     perks: ["Create unlimited tenders", "Compare quotations side-by-side", "Award & manage contracts"],
   },
   {
-    value: "trader",
+    value: "TRADER",
     label: "Trader",
     description: "Browse tenders and submit winning proposals",
     icon: User2,
@@ -35,13 +35,73 @@ const ROLE_OPTIONS: {
 
 export default function Register() {
   const [searchParams] = useSearchParams();
-  const defaultRole = (searchParams.get("role") as Role) || "organization";
+  const defaultRole = (searchParams.get("role") as Role) || "ORG";
   const [role, setRole] = useState<Role>(defaultRole);
   const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async (e: React.FormEvent) => {
+
     e.preventDefault();
-    navigate(role === "organization" ? "/org/dashboard" : "/trader/dashboard");
+
+    console.log("First Name: " + firstName);
+    console.log("Last Name: " + lastName);
+    console.log("Company Name: " + companyName);
+    console.log("Role: " + role);
+    console.log("Email: " + email);
+    console.log("Password: " + password);
+
+    try {
+      
+      setLoading(true);
+      setError("");
+
+      const _response = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json"
+        }, body: JSON.stringify({
+          name: firstName + " " + lastName,
+          email: email,
+          password: password,
+          role: role.toUpperCase()
+        })
+      });
+
+      const _responseJson = await _response.json();
+      console.log(_responseJson);
+
+      if(!_response.ok) {
+        throw new Error(_responseJson.message || "Login failed");
+      }
+
+      localStorage.setItem("token", _responseJson.token)
+      console.log(localStorage.getItem("token"));
+
+      console.log(_responseJson.user.role)
+
+      if (_responseJson.user.role === "ORG")  { 
+        navigate("/org/dashboard")
+      } else if (_responseJson.user.role === "TRADER"){ 
+        navigate("/trader/dashboard");
+      }
+
+    } catch(err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+
+
+    // navigate(role === "organization" ? "/org/dashboard" : "/trader/dashboard");
   };
 
   return (
@@ -71,7 +131,11 @@ export default function Register() {
               {ROLE_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => setRole(opt.value)}
+                  onClick={() => { 
+                    setRole(opt.value)
+                    console.log("Role: " + opt.value)
+                    }
+                  }
                   className={cn(
                     "relative text-left p-4 rounded-xl border-2 transition-all duration-150",
                     role === opt.value
@@ -113,31 +177,33 @@ export default function Register() {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label className="text-sm">First name</Label>
-                <Input placeholder="Sarah" className="h-9" />
+                <Input placeholder="First name" className="h-9" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-sm">Last name</Label>
-                <Input placeholder="Chen" className="h-9" />
+                <Input placeholder="Last Name" className="h-9" value={lastName} onChange={(e) => setLastName(e.target.value)} />
               </div>
             </div>
             <div className="space-y-1.5">
               <Label className="text-sm">
-                {role === "organization" ? "Organization name" : "Company name"}
+                {role === "ORG" ? "Organization name" : "Company name"}
               </Label>
               <Input
                 placeholder={
-                  role === "organization" ? "Apex Enterprises Ltd." : "NovaTech Solutions"
+                  role === "ORG" ? "Apex Enterprises Ltd." : "NovaTech Solutions"
                 }
+                value = {companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 className="h-9"
               />
             </div>
             <div className="space-y-1.5">
               <Label className="text-sm">Work email</Label>
-              <Input type="email" placeholder="you@company.com" className="h-9" />
+              <Input type="email" placeholder="you@company.com" className="h-9" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </div>
             <div className="space-y-1.5">
               <Label className="text-sm">Password</Label>
-              <Input type="password" placeholder="Min. 8 characters" className="h-9" />
+              <Input type="password" placeholder="Min. 8 characters" className="h-9" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
 
             <Button type="submit" className="w-full gap-2 h-9">

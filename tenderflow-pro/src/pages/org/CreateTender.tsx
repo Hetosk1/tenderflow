@@ -1,7 +1,6 @@
 // src/pages/org/CreateTender.tsx — Create tender form
-
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +38,15 @@ const CATEGORIES = [
   "Other",
 ];
 
+type OrgContext = {
+  data: any
+};
+
 export default function CreateTender() {
+
+  const { data } = useOutletContext<OrgContext>();
+  console.log(data);
+
   const [isPublic, setIsPublic] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
