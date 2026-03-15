@@ -1,6 +1,6 @@
 // src/pages/org/MyTenders.tsx — List of organization's tenders
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,10 +27,10 @@ import { cn } from "@/lib/utils";
 
 const STATUS_FILTERS: { label: string; value: TenderStatus | "all" }[] = [
   { label: "All", value: "all" },
-  { label: "Open", value: "open" },
-  { label: "Evaluation", value: "evaluation" },
-  { label: "Awarded", value: "awarded" },
-  { label: "Closed", value: "closed" },
+  { label: "Open", value: "OPEN" },
+  { label: "Evaluation", value: "EVALUATION" },
+  { label: "Awarded", value: "AWARDED" },
+  { label: "Closed", value: "CLOSED" },
 ];
 
 type OrgContext = {
@@ -42,10 +42,46 @@ export default function MyTenders() {
   const { data } = useOutletContext<OrgContext>();
   console.log(data);
 
+  const [APIResponse, setAPIResponse] = useState([]);
+
+   useEffect(() => {
+    const fetchData = async () => {
+
+      const _response = await fetch("http://localhost:3000/tender/my", {
+        method: "GET", 
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await _response.json();
+
+      await setAPIResponse(data.data);
+
+      console.log(data.data)
+
+
+    };
+    fetchData();
+  }, [])
+
+  useEffect(() => {
+  console.log("APIResponse state updated:", APIResponse);
+  APIResponse.map(i => {
+    console.log("ID: " + i._id);
+    console.log("Title: " + i.title);
+    console.log("Description" + i.description);
+    console.log("Deadline" + i.deadline.slice(0, 10));
+    console.log("Budget: " + i.category);
+  })
+  }, [APIResponse]);
+
   const [activeFilter, setActiveFilter] = useState<TenderStatus | "all">("all");
   const [search, setSearch] = useState("");
 
   const orgTenders = MOCK_TENDERS.filter((t) => t.organizationId === "o1");
+
   const filtered = orgTenders.filter((t) => {
     const matchStatus = activeFilter === "all" || t.status === activeFilter;
     const matchSearch = t.title.toLowerCase().includes(search.toLowerCase());
@@ -136,14 +172,14 @@ export default function MyTenders() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filtered.map((tender) => (
+              {APIResponse.map((tender) => (
                 <tr
-                  key={tender.id}
+                  key={tender._id}
                   className="hover:bg-muted/30 transition-colors"
                 >
                   <td className="px-5 py-3.5">
                     <Link
-                      to={`/org/tenders/${tender.id}`}
+                      to={`/org/tenders/${tender._id}`}
                       className="text-sm font-medium text-foreground hover:text-primary transition-colors line-clamp-1"
                     >
                       {tender.title}
@@ -158,12 +194,13 @@ export default function MyTenders() {
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <Clock className="w-3.5 h-3.5" />
-                      {tender.deadline}
+                      {tender.deadline.slice(0, 10)}
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
                     <span className="text-sm font-medium text-foreground">
-                      ${tender.budget.toLocaleString()}
+                      "0"
+                      {/* ${tender.budget.toLocaleString()} */}
                     </span>
                   </td>
                   <td className="px-4 py-3.5">

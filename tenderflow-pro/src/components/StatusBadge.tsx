@@ -14,37 +14,37 @@ const STATUS_CONFIG: Record<
   Status,
   { label: string; dot: string; badge: string }
 > = {
-  open: {
+  OPEN: {
     label: "Open",
     dot: "bg-status-open",
     badge: "bg-status-open-bg text-status-open-fg",
   },
-  evaluation: {
+  EVALUATION: {
     label: "Evaluation",
     dot: "bg-status-evaluation",
     badge: "bg-status-evaluation-bg text-status-evaluation-fg",
   },
-  awarded: {
+  AWARDED: {
     label: "Awarded",
     dot: "bg-status-awarded",
     badge: "bg-status-awarded-bg text-status-awarded-fg",
   },
-  closed: {
+  CLOSED: {
     label: "Closed",
     dot: "bg-status-closed",
     badge: "bg-status-closed-bg text-status-closed-fg",
   },
-  pending: {
+  PENDING: {
     label: "Pending",
     dot: "bg-status-evaluation",
     badge: "bg-status-evaluation-bg text-status-evaluation-fg",
   },
-  accepted: {
+  ACCEPTED: {
     label: "Accepted",
     dot: "bg-status-open",
     badge: "bg-status-open-bg text-status-open-fg",
   },
-  rejected: {
+  REJECTED: {
     label: "Rejected",
     dot: "bg-status-rejected",
     badge: "bg-status-rejected-bg text-status-rejected-fg",

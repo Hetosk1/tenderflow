@@ -2,9 +2,9 @@
 
 export type UserRole = "organization" | "trader" | "admin";
 
-export type TenderStatus = "open" | "evaluation" | "awarded" | "closed";
+export type TenderStatus = "OPEN" | "EVALUATION" | "AWARDED" | "CLOSED";
 
-export type QuotationStatus = "pending" | "accepted" | "rejected";
+export type QuotationStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
 export interface User {
   id: string;
@@ -16,7 +16,7 @@ export interface User {
 }
 
 export interface Tender {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   budget: number;

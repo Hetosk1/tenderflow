@@ -1,6 +1,6 @@
 // src/pages/org/TenderDetails.tsx — Org view of a specific tender with quotations
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -23,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Quotation } from "@/types";
 import { ComparisonModal } from "@/components/org/ComparisonModal";
+import { Tender } from "@/types";
 
 type Tab = "quotations" | "details" | "activity";
 type OrgContext = {
@@ -31,17 +32,79 @@ type OrgContext = {
 
 export default function TenderDetails() {
 
+  const { id } = useParams();
+
+  // const [tender1, setTender] = useState({});
+  const [tender1, setTender] = useState<any>({}); 
+  const [quotations1, setQuotations] = useState<any>([]);
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      const tenderRes = await fetch(`http://localhost:3000/tender/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
+
+      const tenderData = await tenderRes.json();
+      setTender(tenderData.data);
+
+      const quoteRes = await fetch(`http://localhost:3000/quotation/tender/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
+
+      const quoteData = await quoteRes.json();
+      setQuotations(quoteData.data);
+
+    };
+
+    fetchData();
+
+  }, [id]);
+
+  useEffect(() => {
+    console.log("Tender state updated:", tender1);
+    console.log("Id: " + tender1._id)
+    console.log("Title: " + tender1.title)
+    console.log("Description: " + tender1.description)
+    console.log("Deadline: " + tender1.deadline)
+    console.log("Status: " + tender1.status)
+    console.log("Category: " + tender1.category)
+  }, [tender1]);
+
+  useEffect(() => {
+    console.log("Quotations state updated: ", quotations1)
+
+    if (quotations1.length > 0) {
+      console.log("Trader Name:", quotations1[0].trader.name);
+      console.log("Trader Email: " + quotations1[0].trader.email)
+      console.log("Trader Price: " + quotations1[0].price)
+      console.log("Trader Status: " + quotations1[0].status)
+      console.log("Trader Submitted: " + quotations1[0].submitted)
+      console.log("Trader Timeline: " + quotations1[0].timeline)
+    }
+
+  }, [quotations1]);
+
+   
+  
+
   const { data } = useOutletContext<OrgContext>();
   console.log(data);
 
-  const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("quotations");
   const [comparisonOpen, setComparisonOpen] = useState(false);
   const [selectedQuotations, setSelectedQuotations] = useState<string[]>([]);
 
-  const tender = MOCK_TENDERS.find((t) => t.id === id);
-  const quotations = MOCK_QUOTATIONS.filter((q) => q.tenderId === id);
+  // const tender = MOCK_TENDERS.find((t) => t.id === id);
+  const tender = tender1;
+  const quotations: any[] = quotations1 || [];
+
 
   if (!tender) {
     return (
@@ -98,7 +161,7 @@ export default function TenderDetails() {
           <div className="flex flex-wrap items-center gap-5 mt-4 pt-4 border-t border-border">
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <DollarSign className="w-3.5 h-3.5" />
-              Budget: <span className="font-medium text-foreground">${tender.budget.toLocaleString()}</span>
+              Budget: <span className="font-medium text-foreground">0</span>
             </div>
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Calendar className="w-3.5 h-3.5" />
@@ -110,14 +173,14 @@ export default function TenderDetails() {
             </div>
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Users className="w-3.5 h-3.5" />
-              <span className="font-medium text-foreground">{tender.quotationsCount}</span> quotations received
+              <span className="font-medium text-foreground">{quotations1.length}</span> quotations received
             </div>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-0.5 border-b border-border">
+      {/* <div className="flex items-center gap-0.5 border-b border-border">
         {TABS.map((tab) => (
           <button
             key={tab.key}
@@ -132,27 +195,23 @@ export default function TenderDetails() {
             {tab.label}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {/* Tab Content */}
-      {activeTab === "quotations" && (
         <QuotationsTab
           quotations={quotations}
           selected={selectedQuotations}
           onToggle={toggleSelect}
           onCompare={() => setComparisonOpen(true)}
         />
-      )}
-      {activeTab === "details" && <DetailsTab tender={tender} />}
-      {activeTab === "activity" && <ActivityTab />}
 
       {/* Comparison Modal */}
-      <ComparisonModal
+      {/* <ComparisonModal
         open={comparisonOpen}
         onClose={() => setComparisonOpen(false)}
         quotations={quotations.filter((q) => selectedQuotations.includes(q.id))}
         tenderBudget={tender.budget}
-      />
+      /> */}
     </div>
   );
 }
@@ -202,7 +261,7 @@ function QuotationsTab({
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-muted/30">
-              <th className="w-8 px-4 py-3" />
+              {/* <th className="w-8 px-4 py-3" /> */}
               <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground">Trader</th>
               <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground">Price</th>
               <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground">Timeline</th>
@@ -214,31 +273,31 @@ function QuotationsTab({
           </thead>
           <tbody className="divide-y divide-border">
             {quotations.map((q) => (
-              <tr key={q.id} className={cn("hover:bg-muted/30 transition-colors", selected.includes(q.id) && "bg-accent/30")}>
-                <td className="px-4 py-3.5">
+              <tr key={q.id} className={cn("hover:bg-muted/30 transition-colors", selected.includes(q._id) && "bg-accent/30")}>
+                {/* <td className="px-4 py-3.5">
                   <input
                     type="checkbox"
                     checked={selected.includes(q.id)}
                     onChange={() => onToggle(q.id)}
                     className="rounded border-border"
                   />
-                </td>
+                </td> */}
                 <td className="px-4 py-3.5">
                   <div className="flex items-center gap-2.5">
                     <div className="w-7 h-7 rounded-full bg-primary-light flex items-center justify-center shrink-0">
                       <span className="text-xs font-semibold text-accent-foreground">
-                        {q.traderName.split(" ").map((n) => n[0]).join("")}
+                        {q.trader.name.split(" ").map((n) => n[0]).join("")}
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground">{q.traderName}</p>
-                      <p className="text-xs text-muted-foreground">{q.traderCompany}</p>
+                      <p className="text-sm font-medium text-foreground">{q.trader.name}</p>
+                      <p className="text-xs text-muted-foreground">{q.trader.email}</p>
                     </div>
                   </div>
                 </td>
                 <td className="px-4 py-3.5">
                   <span className="text-sm font-semibold text-foreground">
-                    ${q.price.toLocaleString()}
+                    ${q.price}
                   </span>
                 </td>
                 <td className="px-4 py-3.5">
@@ -248,18 +307,17 @@ function QuotationsTab({
                   </div>
                 </td>
                 <td className="px-4 py-3.5">
-                  {q.rating && (
                     <div className="flex items-center gap-1 text-sm">
                       <Star className="w-3.5 h-3.5 text-status-evaluation fill-status-evaluation" />
-                      <span className="font-medium text-foreground">{q.rating}</span>
+                      <span className="font-medium text-foreground">4.7</span>
                     </div>
-                  )}
                 </td>
                 <td className="px-4 py-3.5">
+                  {/* {q.status} */}
                   <StatusBadge status={q.status} />
                 </td>
                 <td className="px-4 py-3.5">
-                  <span className="text-sm text-muted-foreground">{q.submittedAt}</span>
+                  <span className="text-sm text-muted-foreground">{q.updatedAt.slice(0, 10)}</span>
                 </td>
                 <td className="px-4 py-3.5">
                   <div className="flex items-center gap-1.5 justify-end">
@@ -291,61 +349,61 @@ function QuotationsTab({
   );
 }
 
-function DetailsTab({ tender }: { tender: ReturnType<typeof MOCK_TENDERS.find> }) {
-  if (!tender) return null;
-  return (
-    <div className="bg-card rounded-xl shadow-card border border-border p-6 space-y-5">
-      <div className="grid sm:grid-cols-2 gap-5">
-        {[
-          { label: "Title", value: tender.title },
-          { label: "Category", value: tender.category },
-          { label: "Budget", value: `$${tender.budget.toLocaleString()}` },
-          { label: "Deadline", value: tender.deadline },
-          { label: "Visibility", value: tender.visibility === "public" ? "Public" : "Private" },
-          { label: "Created", value: tender.createdAt },
-        ].map((row) => (
-          <div key={row.label}>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{row.label}</p>
-            <p className="text-sm font-medium text-foreground">{row.value}</p>
-          </div>
-        ))}
-      </div>
-      <div>
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Description</p>
-        <p className="text-sm text-foreground leading-relaxed">{tender.description}</p>
-      </div>
-    </div>
-  );
-}
+// function DetailsTab({ tender }: { tender: ReturnType<typeof MOCK_TENDERS.find> }) {
+//   if (!tender) return null;
+//   return (
+//     <div className="bg-card rounded-xl shadow-card border border-border p-6 space-y-5">
+//       <div className="grid sm:grid-cols-2 gap-5">
+//         {[
+//           { label: "Title", value: tender.title },
+//           { label: "Category", value: tender.category },
+//           { label: "Budget", value: `$${tender.budget.toLocaleString()}` },
+//           { label: "Deadline", value: tender.deadline },
+//           { label: "Visibility", value: tender.visibility === "public" ? "Public" : "Private" },
+//           { label: "Created", value: tender.createdAt },
+//         ].map((row) => (
+//           <div key={row.label}>
+//             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{row.label}</p>
+//             <p className="text-sm font-medium text-foreground">{row.value}</p>
+//           </div>
+//         ))}
+//       </div>
+//       <div>
+//         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Description</p>
+//         <p className="text-sm text-foreground leading-relaxed">{tender.description}</p>
+//       </div>
+//     </div>
+//   );
+// }
 
-function ActivityTab() {
-  return (
-    <div className="bg-card rounded-xl shadow-card border border-border p-5">
-      <div className="space-y-5">
-        {MOCK_ACTIVITY.map((activity, i) => (
-          <div key={activity.id} className="flex gap-4">
-            <div className="flex flex-col items-center">
-              <div
-                className={cn(
-                  "w-2 h-2 rounded-full mt-1.5 shrink-0",
-                  activity.type === "success"
-                    ? "bg-status-open"
-                    : activity.type === "warning"
-                    ? "bg-status-evaluation"
-                    : "bg-primary"
-                )}
-              />
-              {i < MOCK_ACTIVITY.length - 1 && (
-                <div className="w-px flex-1 bg-border mt-1.5" />
-              )}
-            </div>
-            <div className="pb-5">
-              <p className="text-sm text-foreground">{activity.message}</p>
-              <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+// function ActivityTab() {
+//   return (
+//     <div className="bg-card rounded-xl shadow-card border border-border p-5">
+//       <div className="space-y-5">
+//         {MOCK_ACTIVITY.map((activity, i) => (
+//           <div key={activity.id} className="flex gap-4">
+//             <div className="flex flex-col items-center">
+//               <div
+//                 className={cn(
+//                   "w-2 h-2 rounded-full mt-1.5 shrink-0",
+//                   activity.type === "success"
+//                     ? "bg-status-open"
+//                     : activity.type === "warning"
+//                     ? "bg-status-evaluation"
+//                     : "bg-primary"
+//                 )}
+//               />
+//               {i < MOCK_ACTIVITY.length - 1 && (
+//                 <div className="w-px flex-1 bg-border mt-1.5" />
+//               )}
+//             </div>
+//             <div className="pb-5">
+//               <p className="text-sm text-foreground">{activity.message}</p>
+//               <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }

@@ -4,14 +4,14 @@ import { Tender, Quotation, ActivityLog } from "@/types";
 
 export const MOCK_TENDERS: Tender[] = [
   {
-    id: "t1",
+    _id: "t1",
     title: "Enterprise Software Development Platform",
     description:
       "Seeking a reliable partner for developing an enterprise-grade software platform including ERP modules, analytics dashboard, and API integrations.",
     budget: 120000,
     category: "Software Development",
     deadline: "2024-04-15",
-    status: "open",
+    status: "OPEN",
     organization: "Apex Enterprises Ltd.",
     organizationId: "o1",
     quotationsCount: 7,
@@ -19,14 +19,14 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2024-02-01",
   },
   {
-    id: "t2",
+    _id: "t2",
     title: "Office IT Infrastructure Upgrade",
     description:
       "Complete infrastructure overhaul including servers, network equipment, workstations, and security systems across 3 office locations.",
     budget: 85000,
     category: "IT Infrastructure",
     deadline: "2024-03-28",
-    status: "evaluation",
+    status: "EVALUATION",
     organization: "Apex Enterprises Ltd.",
     organizationId: "o1",
     quotationsCount: 12,
@@ -34,14 +34,14 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2024-01-15",
   },
   {
-    id: "t3",
+    _id: "t3",
     title: "Annual Marketing Campaign Management",
     description:
       "Full-service digital and traditional marketing campaign covering SEO, PPC, social media, and offline events for FY2024.",
     budget: 45000,
     category: "Marketing",
     deadline: "2024-03-10",
-    status: "awarded",
+    status: "AWARDED",
     organization: "Apex Enterprises Ltd.",
     organizationId: "o1",
     quotationsCount: 9,
@@ -49,14 +49,14 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2024-01-05",
   },
   {
-    id: "t4",
+    _id: "t4",
     title: "Legal Advisory Services — M&A",
     description:
       "Retaining a law firm for mergers and acquisitions advisory, due diligence, and regulatory compliance for upcoming transactions.",
     budget: 60000,
     category: "Legal Services",
     deadline: "2024-02-20",
-    status: "closed",
+    status: "CLOSED",
     organization: "Apex Enterprises Ltd.",
     organizationId: "o1",
     quotationsCount: 4,
@@ -64,14 +64,14 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2023-12-10",
   },
   {
-    id: "t5",
+    _id: "t5",
     title: "Cloud Migration & DevOps Setup",
     description:
       "Migration of on-premise infrastructure to AWS/Azure with CI/CD pipeline setup, Kubernetes orchestration, and 24/7 monitoring.",
     budget: 95000,
     category: "Cloud Services",
     deadline: "2024-05-01",
-    status: "open",
+    status: "OPEN",
     organization: "Global Innovations Corp.",
     organizationId: "o2",
     quotationsCount: 3,
@@ -79,14 +79,14 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2024-02-10",
   },
   {
-    id: "t6",
+    _id: "t6",
     title: "Cybersecurity Audit & Penetration Testing",
     description:
       "Comprehensive cybersecurity audit including penetration testing, vulnerability assessment, and remediation roadmap.",
     budget: 35000,
     category: "Cybersecurity",
     deadline: "2024-04-01",
-    status: "open",
+    status: "OPEN",
     organization: "TechVault Solutions",
     organizationId: "o3",
     quotationsCount: 5,
@@ -94,6 +94,8 @@ export const MOCK_TENDERS: Tender[] = [
     createdAt: "2024-02-08",
   },
 ];
+// export const MOCK_TENDERS: Tender[] = [
+// ];
 
 export const MOCK_QUOTATIONS: Quotation[] = [
   {
@@ -107,7 +109,7 @@ export const MOCK_QUOTATIONS: Quotation[] = [
     timeline: "6 months",
     proposal:
       "We propose a phased delivery model with bi-weekly sprints. Our team of 8 senior engineers will ensure delivery on time.",
-    status: "pending",
+    status: "PENDING",
     submittedAt: "2024-02-10",
     rating: 4.8,
   },
@@ -122,7 +124,7 @@ export const MOCK_QUOTATIONS: Quotation[] = [
     timeline: "7 months",
     proposal:
       "Competitive pricing with dedicated project manager, QA team, and post-deployment support for 12 months.",
-    status: "pending",
+    status: "PENDING",
     submittedAt: "2024-02-12",
     rating: 4.5,
   },
@@ -137,7 +139,7 @@ export const MOCK_QUOTATIONS: Quotation[] = [
     timeline: "3 months",
     proposal:
       "Full hardware procurement, installation, and staff training included. Vendor partnerships with Dell and Cisco.",
-    status: "accepted",
+    status: "ACCEPTED",
     submittedAt: "2024-01-20",
     rating: 4.9,
   },
@@ -152,7 +154,7 @@ export const MOCK_QUOTATIONS: Quotation[] = [
     timeline: "12 months",
     proposal:
       "360-degree campaign covering digital, social, and offline channels with monthly reporting and KPI tracking.",
-    status: "accepted",
+    status: "ACCEPTED",
     submittedAt: "2024-01-12",
     rating: 4.7,
   },
@@ -167,7 +169,7 @@ export const MOCK_QUOTATIONS: Quotation[] = [
     timeline: "4 months",
     proposal:
       "AWS-certified team with 50+ successful migrations. Minimal downtime guaranteed with blue-green deployment strategy.",
-    status: "pending",
+    status: "PENDING",
     submittedAt: "2024-02-14",
     rating: 4.8,
   },

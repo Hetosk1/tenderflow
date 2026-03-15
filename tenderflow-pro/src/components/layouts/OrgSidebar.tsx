@@ -18,8 +18,8 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/org/dashboard", icon: LayoutDashboard },
   { label: "Create Tender", href: "/org/create-tender", icon: PlusCircle },
   { label: "My Tenders", href: "/org/tenders", icon: FileText },
-  { label: "Quotations Received", href: "/org/quotations", icon: InboxIcon },
-  { label: "Notifications", href: "/org/notifications", icon: Bell },
+  // { label: "Quotations Received", href: "/org/quotations", icon: InboxIcon },
+  // { label: "Notifications", href: "/org/notifications", icon: Bell },
   { label: "Settings", href: "/org/settings", icon: Settings },
 ];
 

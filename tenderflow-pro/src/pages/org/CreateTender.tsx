@@ -1,5 +1,5 @@
 // src/pages/org/CreateTender.tsx — Create tender form
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ import {
   Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { L } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
 
 const CATEGORIES = [
   "Software Development",
@@ -47,14 +48,50 @@ export default function CreateTender() {
   const { data } = useOutletContext<OrgContext>();
   console.log(data);
 
-  const [isPublic, setIsPublic] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [budget, setBudget] = useState(0);
+
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => navigate("/org/tenders"), 1500);
+
+    try {
+
+      setLoading(true);
+
+      const _response = await fetch("http://localhost:3000/tender/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          budget: budget,
+          category: category,
+          deadline: deadline
+        })
+      });
+
+      const data = await _response.json();
+      console.log(data);
+
+    } catch(err) {
+      console.log(err.message)
+    } finally {
+      setLoading(false)
+    }
+
+
+
+    // setTimeout(() => navigate("/org/tenders"), 1500);
   };
 
   if (submitted) {
@@ -93,18 +130,22 @@ export default function CreateTender() {
           <div className="space-y-1.5">
             <Label className="text-sm">Tender Title *</Label>
             <Input
+              value = {title}
               required
               placeholder="e.g., Enterprise Software Development Platform"
               className="h-9"
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
           <div className="space-y-1.5">
             <Label className="text-sm">Description *</Label>
             <Textarea
+              value = {description}
               required
               placeholder="Provide a detailed description of what you're looking for, scope of work, deliverables, and any specific requirements..."
               className="min-h-[100px] resize-none"
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
@@ -114,7 +155,7 @@ export default function CreateTender() {
                 <Tag className="w-3.5 h-3.5 text-muted-foreground" />
                 Category *
               </Label>
-              <Select required>
+              <Select required value={category} onValueChange={(value) => setCategory(value)}>
                 <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
@@ -133,7 +174,7 @@ export default function CreateTender() {
                 <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                 Submission Deadline *
               </Label>
-              <Input type="date" required className="h-9" />
+              <Input type="date" required className="h-9" value={deadline} onChange={(e) => setDeadline(e.target.value)}/>
             </div>
           </div>
         </div>
@@ -157,10 +198,12 @@ export default function CreateTender() {
                   required
                   placeholder="50,000"
                   className="h-9 pl-6"
+                  value={budget}
+                  onChange={(e) => setBudget(parseInt(e.target.value))}
                 />
               </div>
             </div>
-            <div className="space-y-1.5">
+            {/* <div className="space-y-1.5">
               <Label className="text-sm">Budget Type</Label>
               <Select defaultValue="fixed">
                 <SelectTrigger className="h-9">
@@ -172,7 +215,7 @@ export default function CreateTender() {
                   <SelectItem value="open">Open / Best Offer</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -193,7 +236,7 @@ export default function CreateTender() {
           </div>
         </div>
 
-        {/* Visibility */}
+        {/* Visibility
         <div className="bg-card rounded-xl shadow-card border border-border p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -211,7 +254,7 @@ export default function CreateTender() {
             </div>
             <Switch checked={isPublic} onCheckedChange={setIsPublic} />
           </div>
-        </div>
+        </div> */}
 
         {/* Actions */}
         <div className="flex items-center justify-between pt-2">
@@ -219,9 +262,9 @@ export default function CreateTender() {
             Cancel
           </Button>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline">
+            {/* <Button type="button" variant="outline">
               Save as Draft
-            </Button>
+            </Button> */}
             <Button type="submit" className="gap-1.5 px-5">
               Publish Tender
             </Button>

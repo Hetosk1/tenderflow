@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
 
 type OrgContext = { 
   data: any
@@ -12,7 +13,19 @@ type OrgContext = {
 export default function OrgSettings() {
 
   const { data } = useOutletContext<OrgContext>()
-  console.log(data);
+  console.log(data.name);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    setName(data.name);
+    setEmail(data.email);
+    setPhone("+91-9327182403");
+  }, [data]);
+  
+  console.log("Name: " + name);
 
   return (
     <div className="max-w-xl space-y-5 animate-fade-in">
@@ -23,15 +36,15 @@ export default function OrgSettings() {
         <div className="space-y-3">
           <div className="space-y-1.5">
             <Label className="text-sm">Organization Name</Label>
-            <Input defaultValue="Apex Enterprises Ltd." className="h-9" />
+            <Input  className="h-9" value={name} onChange={(e) => setName(e.target.value)}/>
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm">Email Address</Label>
-            <Input defaultValue="admin@apex.com" className="h-9" />
+            <Input className="h-9" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm">Phone</Label>
-            <Input defaultValue="+1 (555) 000-0000" className="h-9" />
+            <Input className="h-9" value={phone} onChange={(e) => setPhone(e.target.value)}/>
           </div>
         </div>
         <Button size="sm">Save Changes</Button>

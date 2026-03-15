@@ -56,8 +56,30 @@ tenderRouter.post("/", auth, role("ORG"), async (_request, _response) => {
     }
 });
 
+tenderRouter.get("/my", auth, async (_request, _response) => {
+
+    try {
+
+        const openTenders = await TenderModel.find({status: "OPEN", organization: _request.user._id}).populate("organization", "name email");
+
+        return _response.json({
+            success: true,
+            data: openTenders 
+        });
+        
+    } catch(err) {
+
+        return _response.status(500).json({
+            message: "Server side error",
+            error: err.message,
+            success: false
+        });
+
+    }
+});
+
 // get all open routes 
-tenderRouter.get("/", async (_request, _response) => {
+tenderRouter.get("/", auth, async (_request, _response) => {
 
     try {
 
