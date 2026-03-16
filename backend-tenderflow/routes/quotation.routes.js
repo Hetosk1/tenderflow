@@ -22,7 +22,7 @@ quotationRouter.post("/", auth, role("TRADER"), async (_request, _response) => {
 
         if(!tenderId || !price || !timeline || !proposal) {
             return _response.status(400).json({
-                message: "Missing Required fields",
+                message: "Missing required fields",
                 success: false
             });
         }
