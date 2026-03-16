@@ -9,7 +9,7 @@ const authRouter = express.Router();
 
 authRouter.get('/health', (_request, _response) => {
     return _response.json({
-        message: "Auth Router working"
+        message: "Auth Router Working"
     });
 });
 
@@ -32,7 +32,7 @@ authRouter.post('/register', async (_request, _response) => {
         if(userExists) {
             return _response.json({
                 success: false,
-                message: "User Already exists"
+                message: "User already exists"
             });
         }
 
@@ -50,7 +50,7 @@ authRouter.post('/register', async (_request, _response) => {
 
         return _response.json({
             success: true,
-            message: "User Created",
+            message: "User created",
             token: token,
             user: user
         });
