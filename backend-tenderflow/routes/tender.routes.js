@@ -11,7 +11,11 @@ const tenderRouter = express.Router();
 tenderRouter.get("/health", (_request, _response) => {
 
     return _response.json({
+<<<<<<< HEAD
         "message": "Tender router working..."
+=======
+        "message": "Tender outer working..."
+>>>>>>> c63ff654 (Done)
     });
 
 });
