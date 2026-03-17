@@ -11,11 +11,7 @@ const tenderRouter = express.Router();
 tenderRouter.get("/health", (_request, _response) => {
 
     return _response.json({
-<<<<<<< HEAD
         "message": "Tender router working..."
-=======
-        "message": "Tender outer working..."
->>>>>>> c63ff654 (Done)
     });
 
 });
@@ -87,7 +83,7 @@ tenderRouter.get("/", auth, async (_request, _response) => {
 
     try {
 
-        const openTenders = await TenderModel.find({status: "OPEN"}).populate("organization", "name email");
+        const openTenders = await TenderModel.find().populate("organization", "name email");
 
         return _response.json({
             success: true,

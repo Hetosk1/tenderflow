@@ -20,12 +20,14 @@ import {
 } from "@/components/ui/select";
 import { Check, Upload, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast, useToast } from "@/hooks/use-toast";
 
 interface SubmitQuotationModalProps {
   open: boolean;
   onClose: () => void;
   tenderTitle: string;
   tenderBudget: number;
+  tenderid: string
 }
 
 export function SubmitQuotationModal({
@@ -33,13 +35,59 @@ export function SubmitQuotationModal({
   onClose,
   tenderTitle,
   tenderBudget,
+  tenderid, 
 }: SubmitQuotationModalProps) {
+  const {toast} = useToast();
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [tenderId, setTenderId] = useState(tenderid);
+  const [price, setPrice] = useState(0);
+  const [timeline, setTimeline] = useState("");
+  const [proposal, setProposal] = useState("");
+
+
+  console.log(tenderTitle);
+  console.log(tenderBudget);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    console.log({
+        tenderId: tenderId,
+        price: price,
+        timeline: timeline,
+        proposal: proposal
+    })
+
+    const _response = await fetch("http://localhost:3000/quotation", {
+      method: "POST",
+      headers: {
+        'Authorization': "Bearer " + localStorage.getItem("token"),
+        'Content-Type': 'application/json'  
+      },
+      body: JSON.stringify({
+        tenderId: tenderid,
+        price: price,
+        timeline: timeline,
+        proposal: proposal
+      })
+    }); 
+
+    const data = await _response.json();
+    console.log(data);
+
+    if(data.success == true) {
+      toast({
+        title: "Quotation submitted"
+      });
+    } else {
+      toast({
+        title: "Quotation not submitted",
+        description: data.message
+      });
+    }
+
     setTimeout(() => {
       onClose();
       setSubmitted(false);
@@ -88,8 +136,10 @@ export function SubmitQuotationModal({
                 <Input
                   type="number"
                   required
-                  placeholder={`Max: ${tenderBudget.toLocaleString()}`}
+                  // placeholder={`Max: ${tenderBudget.toLocaleString()}`}
                   className="h-9 pl-7"
+                  value={price}
+                  onChange={(e) => setPrice(parseInt(e.target.value))}
                 />
               </div>
               <p className="text-[11px] text-muted-foreground">
@@ -98,7 +148,7 @@ export function SubmitQuotationModal({
             </div>
             <div className="space-y-1.5">
               <Label className="text-sm">Delivery Timeline *</Label>
-              <Select required>
+              <Select required value={timeline} onValueChange={(value) => {setTimeline(value)}}>
                 <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select timeline" />
                 </SelectTrigger>
@@ -128,6 +178,8 @@ export function SubmitQuotationModal({
               required
               placeholder="Describe your approach, methodology, team expertise, past similar projects, and why you're the best fit for this tender..."
               className="min-h-[110px] resize-none"
+              value={proposal}
+              onChange={(e) => {setProposal(e.target.value)}}
             />
           </div>
 

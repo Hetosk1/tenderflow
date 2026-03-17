@@ -1,6 +1,6 @@
 // src/pages/trader/TraderTenderDetails.tsx — Trader view of a specific tender
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, useOutletContext, useOutlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -23,13 +23,46 @@ type TraderConext = {
 };
 
 export default function TraderTenderDetails() {
+
+
+  const navigate = useNavigate();
   const { data } = useOutletContext<TraderConext>();
   console.log(data);
   const { id } = useParams();
-  const navigate = useNavigate();
+  console.log(id);
+
+  const [tenderi, setTender] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      const _response = await fetch(`http://localhost:3000/tender/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      });
+
+      const responsedata = await _response.json();
+
+      console.log(responsedata);
+
+      setTender(responsedata.data)
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log("Tender state changed");
+    console.log(tenderi);
+  }, [tenderi]);
+
+
   const [modalOpen, setModalOpen] = useState(false);
 
-  const tender = MOCK_TENDERS.find((t) => t.id === id);
+  const tender = MOCK_TENDERS.find((t) => t._id === "t1");
+  // const tender = tenderi;
 
   if (!tender) {
     return (
@@ -55,18 +88,18 @@ export default function TraderTenderDetails() {
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <StatusBadge status={tender.status} />
+              <StatusBadge status={tenderi.status} />
               <span className="text-xs text-muted-foreground">
                 Posted {tender.createdAt}
               </span>
             </div>
-            <h1 className="text-xl font-semibold text-foreground">{tender.title}</h1>
+            <h1 className="text-xl font-semibold text-foreground">{tenderi.title}</h1>
             <div className="flex items-center gap-1.5 mt-2 text-sm text-muted-foreground">
               <Building2 className="w-3.5 h-3.5" />
-              {tender.organization}
+              {tenderi.organization}
             </div>
           </div>
-          {tender.status === "open" && (
+          {tender.status === "OPEN" && (
             <Button className="gap-2 shrink-0" onClick={() => setModalOpen(true)}>
               <Send className="w-3.5 h-3.5" />
               Submit Quotation
@@ -82,7 +115,8 @@ export default function TraderTenderDetails() {
               <span className="text-xs">Budget</span>
             </div>
             <p className="text-base font-bold text-foreground">
-              ${tender.budget.toLocaleString()}
+              00
+              {/* ${tender.budget.toLocaleString()} */}
             </p>
           </div>
           <div className="text-center border-x border-border">
@@ -90,7 +124,7 @@ export default function TraderTenderDetails() {
               <Calendar className="w-3.5 h-3.5" />
               <span className="text-xs">Deadline</span>
             </div>
-            <p className="text-base font-bold text-foreground">{tender.deadline}</p>
+            <p className="text-base font-bold text-foreground">{tenderi.deadline?.slice(0, 10)}</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">
@@ -98,7 +132,8 @@ export default function TraderTenderDetails() {
               <span className="text-xs">Quotations</span>
             </div>
             <p className="text-base font-bold text-foreground">
-              {tender.quotationsCount}
+              0
+              {/* {tender.quotationsCount} */}
             </p>
           </div>
         </div>
@@ -123,10 +158,10 @@ export default function TraderTenderDetails() {
         </h2>
         <div className="grid grid-cols-2 gap-4">
           {[
-            { label: "Category", value: tender.category },
-            { label: "Visibility", value: tender.visibility === "public" ? "Public" : "Private" },
-            { label: "Posted On", value: tender.createdAt },
-            { label: "Deadline", value: tender.deadline },
+            { label: "Category", value: tenderi.category },
+            // { label: "Visibility", value: tender.visibility === "public" ? "Public" : "Private" },
+            { label: "Posted On", value: tenderi.updatedAt?.slice(0, 10) },
+            { label: "Deadline", value: tender.deadline},
           ].map((item) => (
             <div key={item.label}>
               <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
@@ -168,14 +203,14 @@ export default function TraderTenderDetails() {
       </div>
 
       {/* CTA */}
-      {tender.status === "open" && (
+      {tenderi.status === "OPEN" && (
         <div className="bg-primary-light rounded-xl border border-primary/20 p-5 flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold text-foreground">
               Ready to submit your quotation?
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Deadline: {tender.deadline}
+              Deadline: {tenderi.deadline.slice(0, 10)}
             </p>
           </div>
           <Button className="gap-2" onClick={() => setModalOpen(true)}>
@@ -188,8 +223,9 @@ export default function TraderTenderDetails() {
       <SubmitQuotationModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        tenderTitle={tender.title}
-        tenderBudget={tender.budget}
+        tenderTitle={tenderi.title}
+        tenderBudget={100}
+        tenderid={tenderi._id}
       />
     </div>
   );

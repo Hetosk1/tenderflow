@@ -1,6 +1,6 @@
 // src/pages/trader/BrowseTenders.tsx — Browse all open tenders
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { toast, useToast } from "@/hooks/use-toast";
 
 const CATEGORIES = [
   "All Categories",
@@ -43,6 +44,47 @@ type TraderContext = {
 
 export default function BrowseTenders() {
 
+  const {toast} = useToast();
+  const [tendersi, setTenders] = useState([]);
+
+  useEffect(() => {
+    
+    async function fetchData(){
+
+      try {
+
+        const _response = await fetch("http://localhost:3000/tender", {
+          method: "GET",
+          headers: {
+            "Content-Type": "appliation/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+
+        const responseJson = await _response.json();
+
+        setTenders(responseJson.data);
+
+        console.log(data);
+
+      } catch(err) {
+        console.log(err.message);
+        toast({
+          title: err.message
+        });
+      }
+
+    }
+    
+    fetchData();
+ 
+  }, []);
+
+  useEffect(() => {
+    console.log("Tenders state updated");
+    console.log(tendersi)
+  }, [tendersi])
+
   const { data } = useOutletContext<TraderContext>();
   console.log(data);
 
@@ -51,14 +93,15 @@ export default function BrowseTenders() {
   const [category, setCategory] = useState("All Categories");
 
   const publicTenders = MOCK_TENDERS.filter((t) => t.visibility === "public");
-  const filtered = publicTenders.filter((t) => {
-    const matchSearch =
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.organization.toLowerCase().includes(search.toLowerCase());
-    const matchCat =
-      category === "All Categories" || t.category === category;
-    return matchSearch && matchCat;
-  });
+  const filtered = tendersi;
+  // const filtered = publicTenders.filter((t) => {
+  //   const matchSearch =
+  //     t.title.toLowerCase().includes(search.toLowerCase()) ||
+  //     t.organization.toLowerCase().includes(search.toLowerCase());
+  //   const matchCat =
+  //     category === "All Categories" || t.category === category;
+  //   return matchSearch && matchCat;
+  // });
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -132,7 +175,7 @@ export default function BrowseTenders() {
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((tender) => (
             <div
-              key={tender.id}
+              key={tender._id}
               className="bg-card rounded-xl shadow-card border border-border p-5 hover:shadow-soft hover:border-primary/30 transition-all duration-200 group flex flex-col"
             >
               <div className="flex items-start justify-between mb-3">
@@ -159,12 +202,13 @@ export default function BrowseTenders() {
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <DollarSign className="w-3.5 h-3.5" />
                     <span className="font-semibold text-foreground">
-                      ${tender.budget.toLocaleString()}
+                      $200
+                      {/* ${tender.budget.toLocaleString()} */}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Clock className="w-3.5 h-3.5" />
-                    {tender.deadline}
+                    {tender.deadline.slice(0, 10)}
                   </div>
                 </div>
 
@@ -173,7 +217,7 @@ export default function BrowseTenders() {
                   className="w-full gap-1.5 mt-1"
                   asChild
                 >
-                  <Link to={`/trader/tenders/${tender.id}`}>
+                  <Link to={`/trader/tenders/${tender._id}`}>
                     View Details
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -201,7 +245,7 @@ export default function BrowseTenders() {
             </thead>
             <tbody className="divide-y divide-border">
               {filtered.map((tender) => (
-                <tr key={tender.id} className="hover:bg-muted/30 transition-colors">
+                <tr key={tender._id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-5 py-3.5">
                     <p className="text-sm font-medium text-foreground line-clamp-1">
                       {tender.title}
@@ -214,12 +258,13 @@ export default function BrowseTenders() {
                     {tender.category}
                   </td>
                   <td className="px-4 py-3.5 text-sm font-medium text-foreground">
-                    ${tender.budget.toLocaleString()}
+                    $200
+                    {/* ${tender.budget.toLocaleString()} */}
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <Clock className="w-3.5 h-3.5" />
-                      {tender.deadline}
+                      {tender.deadline.slice(0, 10)}
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
@@ -227,7 +272,7 @@ export default function BrowseTenders() {
                   </td>
                   <td className="px-4 py-3.5">
                     <Button variant="outline" size="sm" className="h-7" asChild>
-                      <Link to={`/trader/tenders/${tender.id}`}>View</Link>
+                      <Link to={`/trader/tenders/${tender._id}`}>View</Link>
                     </Button>
                   </td>
                 </tr>
