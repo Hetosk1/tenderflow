@@ -39,6 +39,7 @@ type OrgContext = {
 
 export default function MyTenders() {
 
+  const AwardTender = (id) => {};
   const { data } = useOutletContext<OrgContext>();
   console.log(data);
 
@@ -67,15 +68,17 @@ export default function MyTenders() {
   }, [])
 
   useEffect(() => {
-  console.log("APIResponse state updated:", APIResponse);
-  APIResponse.map(i => {
-    console.log("ID: " + i._id);
-    console.log("Title: " + i.title);
-    console.log("Description" + i.description);
-    console.log("Deadline" + i.deadline.slice(0, 10));
-    console.log("Budget: " + i.category);
-  })
+    console.log("APIResponse state updated:", APIResponse);
+    APIResponse.map(i => {
+      console.log("ID: " + i._id);
+      console.log("Title: " + i.title);
+      console.log("Description" + i.description);
+      console.log("Deadline" + i.deadline.slice(0, 10));
+      console.log("Budget: " + i.category);
+    })
   }, [APIResponse]);
+
+
 
   const [activeFilter, setActiveFilter] = useState<TenderStatus | "all">("all");
   const [search, setSearch] = useState("");

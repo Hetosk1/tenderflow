@@ -83,6 +83,11 @@ export default function CreateTender() {
       const data = await _response.json();
       console.log(data);
 
+      if(data.success = true) {
+        alert("Tender created successfully");
+      }
+      
+
     } catch(err) {
       console.log(err.message)
     } finally {

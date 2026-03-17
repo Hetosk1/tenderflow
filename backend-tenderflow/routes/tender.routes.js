@@ -60,7 +60,7 @@ tenderRouter.get("/my", auth, async (_request, _response) => {
 
     try {
 
-        const openTenders = await TenderModel.find({status: "OPEN", organization: _request.user._id}).populate("organization", "name email");
+        const openTenders = await TenderModel.find({ organization: _request.user._id}).populate("organization", "name email");
 
         return _response.json({
             success: true,

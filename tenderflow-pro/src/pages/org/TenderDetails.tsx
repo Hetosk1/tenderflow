@@ -24,15 +24,44 @@ import { cn } from "@/lib/utils";
 import { Quotation } from "@/types";
 import { ComparisonModal } from "@/components/org/ComparisonModal";
 import { Tender } from "@/types";
+import { useToast } from "@/hooks/use-toast";
 
 type Tab = "quotations" | "details" | "activity";
 type OrgContext = {
   data: any
 };
 
-export default function TenderDetails() {
+const awardTender = async (tenderid, quotationid) => {
+  console.log(tenderid);
+  console.log(quotationid);
 
+
+  const _repsonse = await fetch(`http://localhost:3000/tender/${tenderid}/award`, {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      quotationId: quotationid
+    })
+  });
+
+  const data = await _repsonse.json();
+  console.log(data);
+
+  return {
+    success: data.success,
+    message: data.message
+  }
+
+  // window.location.reload();
+
+};
+
+export default function TenderDetails() {
   const { id } = useParams();
+  const { toast } = useToast();
 
   // const [tender1, setTender] = useState({});
   const [tender1, setTender] = useState<any>({}); 
@@ -203,6 +232,7 @@ export default function TenderDetails() {
           selected={selectedQuotations}
           onToggle={toggleSelect}
           onCompare={() => setComparisonOpen(true)}
+          tender={tender}
         />
 
       {/* Comparison Modal */}
@@ -223,12 +253,17 @@ function QuotationsTab({
   selected,
   onToggle,
   onCompare,
+  tender
 }: {
   quotations: Quotation[];
   selected: string[];
   onToggle: (id: string) => void;
   onCompare: () => void;
+  tender: any
 }) {
+
+
+  const {toast} = useToast();
   if (quotations.length === 0) {
     return (
       <div className="bg-card rounded-xl shadow-card border border-border">
@@ -273,7 +308,7 @@ function QuotationsTab({
           </thead>
           <tbody className="divide-y divide-border">
             {quotations.map((q) => (
-              <tr key={q.id} className={cn("hover:bg-muted/30 transition-colors", selected.includes(q._id) && "bg-accent/30")}>
+              <tr key={q._id} className={cn("hover:bg-muted/30 transition-colors", selected.includes(q._id) && "bg-accent/30")}>
                 {/* <td className="px-4 py-3.5">
                   <input
                     type="checkbox"
@@ -328,6 +363,27 @@ function QuotationsTab({
                     <Button
                       size="sm"
                       className="h-7 px-2 gap-1 bg-status-open-bg text-status-open-fg hover:bg-status-open/20"
+                      onClick={async () => {
+
+                        const {success, message }= await awardTender(tender._id, q._id);
+
+                        if (success == true) {
+                          toast({
+                            title: "Tender awarded",
+                          });
+                          setTimeout(() => window.location.reload(), 500)
+                        } else {
+                          toast({
+                            title: "Tender not awarded",
+                            description: message
+                          })
+
+                        }
+
+
+
+
+                      }} 
                     >
                       <Check className="w-3.5 h-3.5" />
                     </Button>
