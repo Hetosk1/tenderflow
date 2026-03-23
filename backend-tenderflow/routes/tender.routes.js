@@ -1,10 +1,13 @@
 const express = require("express");
 const TenderModel = require("../models/Tender");
+
 const auth = require("../middleware/auth");
 const role = require("../middleware/role");
-const { Mongoose } = require("mongoose");
+
+
 const UserModel = require("../models/User");
 const QuotationModel = require("../models/Quotation");
+const {client} = require("../config/redis");
 
 const tenderRouter = express.Router();
 
@@ -78,28 +81,71 @@ tenderRouter.get("/my", auth, async (_request, _response) => {
     }
 });
 
-// get all open routes 
+
 tenderRouter.get("/", auth, async (_request, _response) => {
+  const key = "tenders:open";
 
-    try {
+  try {
+    // 1. Check Redis cache
+    const cachedData = await client.get(key);
 
-        const openTenders = await TenderModel.find().populate("organization", "name email");
-
-        return _response.json({
-            success: true,
-            data: openTenders 
-        });
-        
-    } catch(err) {
-
-        return _response.status(500).json({
-            message: "Server side error",
-            error: err.message,
-            success: false
-        });
-
+    if (cachedData) {
+      console.log("Cache HIT");
+      console.log(cachedData);
+      return _response.json(JSON.parse(cachedData));
     }
+
+    console.log("Cache MISS");
+
+    // 2. Fetch from DB (FIXED query)
+    const openTenders = await TenderModel
+      .find({ status: "OPEN" })
+      .populate("organization", "name email")
+      .lean();
+
+    const responseData = {
+      success: true,
+      data: openTenders
+    };
+
+    // 3. Store in Redis with TTL (5 min)
+    await client.setEx(key, 300, JSON.stringify(responseData));
+
+    return _response.json(responseData);
+
+  } catch (err) {
+    console.error("Tender fetch error:", err);
+
+    return _response.status(500).json({
+      message: "Server side error",
+      error: err.message,
+      success: false
+    });
+  }
 });
+
+// get all open routes 
+// tenderRouter.get("/", auth, async (_request, _response) => {
+
+//     try {
+
+//         const openTenders = await TenderModel.find().populate("organization", "name email");
+
+//         return _response.json({
+//             success: true,
+//             data: openTenders 
+//         });
+        
+//     } catch(err) {
+
+//         return _response.status(500).json({
+//             message: "Server side error",
+//             error: err.message,
+//             success: false
+//         });
+
+//     }
+// });
 
 // get single tender 
 tenderRouter.get("/:id", async (_request, _response) => {

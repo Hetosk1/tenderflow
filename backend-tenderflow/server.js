@@ -7,8 +7,11 @@ const tenderRouter = require("./routes/tender.routes");
 const quotationRouter = require("./routes/quotation.routes");
 
 const connectDB  = require("./config/db");
+const {connectionRedis} = require('./config/redis');
+
 
 connectDB();
+connectionRedis();
 
 const app = express();
 dotenv.config();
