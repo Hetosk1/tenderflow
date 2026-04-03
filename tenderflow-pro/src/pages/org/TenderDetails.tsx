@@ -32,11 +32,12 @@ type OrgContext = {
 };
 
 const awardTender = async (tenderid, quotationid) => {
+  const url = import.meta.env.VITE_API_URL;
   console.log(tenderid);
   console.log(quotationid);
 
 
-  const _repsonse = await fetch(`http://localhost:3000/tender/${tenderid}/award`, {
+  const _repsonse = await fetch(`${url}/tender/${tenderid}/award`, {
     method: "POST",
     headers: {
       "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -60,6 +61,7 @@ const awardTender = async (tenderid, quotationid) => {
 };
 
 export default function TenderDetails() {
+  const url = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const { toast } = useToast();
 
@@ -71,7 +73,7 @@ export default function TenderDetails() {
 
     const fetchData = async () => {
 
-      const tenderRes = await fetch(`http://localhost:3000/tender/${id}`, {
+      const tenderRes = await fetch(`${url}/tender/${id}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }

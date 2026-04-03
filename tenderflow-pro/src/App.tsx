@@ -35,6 +35,10 @@ import NotFound from "./pages/NotFound";
 
 
 const queryClient = new QueryClient();
+const url = import.meta.env.VITE_API_URL;
+console.log("HI: " + url);
+
+console.log("hellow");
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

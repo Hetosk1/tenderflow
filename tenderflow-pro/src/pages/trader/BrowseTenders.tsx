@@ -44,6 +44,8 @@ type TraderContext = {
 
 export default function BrowseTenders() {
 
+  const url = import.meta.env.VITE_API_URL;
+
   const {toast} = useToast();
   const [tendersi, setTenders] = useState([]);
 
@@ -53,7 +55,7 @@ export default function BrowseTenders() {
 
       try {
 
-        const _response = await fetch("http://localhost:3000/tender", {
+        const _response = await fetch(`${url}/tender`, {
           method: "GET",
           headers: {
             "Content-Type": "appliation/json",

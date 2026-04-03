@@ -45,6 +45,8 @@ type OrgContext = {
 
 export default function CreateTender() {
 
+  const url = import.meta.env.VITE_API_URL;
+
   const { data } = useOutletContext<OrgContext>();
   console.log(data);
 
@@ -65,7 +67,7 @@ export default function CreateTender() {
 
       setLoading(true);
 
-      const _response = await fetch("http://localhost:3000/tender/", {
+      const _response = await fetch(`${url}/tender/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

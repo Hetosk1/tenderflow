@@ -13,7 +13,7 @@ type TraderSidebarProps = {
 
 export default function TraderLayout() {
 
-  console.log("hello world");
+  const url = import.meta.env.VITE_API_URL;
 
   const [data, setData] = useState<any>({});
 
@@ -22,7 +22,7 @@ export default function TraderLayout() {
     async function fetchData () {
       try {
 
-        const _response = await fetch("http://localhost:3000/auth/me", {
+        const _response = await fetch(`${url}/auth/me`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

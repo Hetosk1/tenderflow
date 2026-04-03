@@ -38,6 +38,8 @@ type OrgContext = {
 };
 
 export default function MyTenders() {
+  
+  const url = import.meta.env.VITE_API_URL;
 
   const AwardTender = (id) => {};
   const { data } = useOutletContext<OrgContext>();
@@ -48,7 +50,7 @@ export default function MyTenders() {
    useEffect(() => {
     const fetchData = async () => {
 
-      const _response = await fetch("http://localhost:3000/tender/my", {
+      const _response = await fetch(`${url}/tender/my`, {
         method: "GET", 
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),

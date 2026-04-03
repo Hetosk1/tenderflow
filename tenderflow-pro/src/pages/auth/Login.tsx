@@ -23,6 +23,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
+    const url = import.meta.env.VITE_API_URL;
 
     e.preventDefault();
 
@@ -31,7 +32,7 @@ export default function Login() {
       setLoading(true);
       setError("");
 
-      const _response = await fetch("http://localhost:3000/auth/login", {
+      const _response = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

@@ -24,6 +24,7 @@ type TraderConext = {
 
 export default function TraderTenderDetails() {
 
+  const url = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
   const { data } = useOutletContext<TraderConext>();
@@ -36,7 +37,7 @@ export default function TraderTenderDetails() {
   useEffect(() => {
     const fetchData = async () => {
 
-      const _response = await fetch(`http://localhost:3000/tender/${id}`, {
+      const _response = await fetch(`${url}/tender/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",

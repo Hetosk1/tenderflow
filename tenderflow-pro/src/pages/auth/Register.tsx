@@ -34,6 +34,7 @@ const ROLE_OPTIONS: {
 ];
 
 export default function Register() {
+  const url = import.meta.env.VITE_API_URL;
   const [searchParams] = useSearchParams();
   const defaultRole = (searchParams.get("role") as Role) || "ORG";
   const [role, setRole] = useState<Role>(defaultRole);
@@ -64,7 +65,7 @@ export default function Register() {
       setLoading(true);
       setError("");
 
-      const _response = await fetch("http://localhost:3000/auth/register", {
+      const _response = await fetch(`${url}/auth/register`, {
         method: "POST",
         headers: {
           'Content-Type': "application/json"

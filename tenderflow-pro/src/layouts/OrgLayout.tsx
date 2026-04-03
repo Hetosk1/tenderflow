@@ -11,6 +11,7 @@ type OrgSidebarProps = {
 }
 
 export default function OrgLayout() {
+  const url = import.meta.env.VITE_API_URL;
 
   console.log("hello world");
 
@@ -21,7 +22,7 @@ export default function OrgLayout() {
     async function fetchData () {
       try {
 
-        const _response = await fetch("http://localhost:3000/auth/me", {
+        const _response = await fetch(`${url}/auth/me`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
