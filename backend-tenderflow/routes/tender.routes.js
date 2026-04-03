@@ -21,42 +21,40 @@ tenderRouter.get("/health", (_request, _response) => {
 
 // created tenders 
 tenderRouter.post("/", auth, role("ORG"), async (_request, _response) => {
+  try {
+    const { title, description, budget, category, deadline } = _request.body;
 
-    try {
-
-        const {title, description, budget, category, deadline} = _request.body;
-
-        if(!title || !budget || !deadline) {
-            return _response.status(400).json({
-                message: "Missing required fields... (title, budget, deadline)",
-                success: false,
-            });
-        }
-
-        const tender = await TenderModel.create({
-            title: title,
-            description: description,
-            budget: budget,
-            category: category,
-            deadline: deadline,
-            organization: _request.user._id
-        });
-
-        return _response.status(200).json({
-            success: true,
-            data: tender
-        });
-
-
-    } catch(err) {
-
-        return _response.status(500).json({
-            message: "Server side error",
-            error: err.message,
-            success: false
-        });
-
+    if (!title || !budget || !deadline) {
+      return _response.status(400).json({
+        message: "Missing required fields... (title, budget, deadline)",
+        success: false,
+      });
     }
+
+    const tender = await TenderModel.create({
+      title,
+      description,
+      budget,
+      category,
+      deadline,
+      organization: _request.user._id
+    });
+
+    // 🔥 IMPORTANT: Invalidate cache AFTER successful creation
+    await client.del("tenders:open");
+
+    return _response.status(200).json({
+      success: true,
+      data: tender
+    });
+
+  } catch (err) {
+    return _response.status(500).json({
+      message: "Server side error",
+      error: err.message,
+      success: false
+    });
+  }
 });
 
 tenderRouter.get("/my", auth, async (_request, _response) => {
