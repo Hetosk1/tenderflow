@@ -1,10 +1,10 @@
-# 🏆 TenderFlow - Enterprise Tender Management System
+# TenderFlow - Enterprise Tender Management System
 
 > A powerful, scalable B2B platform designed to streamline the tender submission and evaluation process for organizations and traders/contractors.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -27,128 +27,136 @@
 
 ---
 
-## 🎯 Overview
+## Overview
 
-**TenderFlow** is a modern, enterprise-grade tender management platform that bridges the gap between organizations seeking services/products and traders/contractors willing to provide competitive bids. The platform facilitates a transparent, efficient bidding process with real-time notifications, secure authentication, and comprehensive tender tracking.
+TenderFlow is a modern, enterprise-grade tender management platform that bridges the gap between organizations seeking services or products and traders/contractors willing to provide competitive bids. The platform facilitates a transparent, efficient bidding process with real-time notifications, secure authentication, and comprehensive tender tracking.
 
 ### Use Cases
-- **Organizations**: Post procurement tenders, manage quotations, compare bids, award contracts
-- **Traders/Contractors**: Discover business opportunities, submit competitive quotations, track bid status
-- **Admins**: Monitor system activity, manage users, ensure compliance
+
+- **Organizations** — Post procurement tenders, manage quotations, compare bids, award contracts.
+- **Traders/Contractors** — Discover business opportunities, submit competitive quotations, track bid status.
+- **Admins** — Monitor system activity, manage users, ensure compliance.
 
 ---
 
-## ✨ Features
+## Features
 
 ### For Organizations
-- ✅ Create and publish tenders with detailed specifications
-- ✅ Set deadlines and automatically track tender lifecycle
-- ✅ Receive and manage quotations from multiple traders
-- ✅ Compare quotations side-by-side
-- ✅ Track tender status (OPEN, EVALUATION, AWARDED, CLOSED)
-- ✅ Award contracts and notify winners
-- ✅ Dashboard with tender analytics and insights
-- ✅ Customizable notification preferences
+
+- Create and publish tenders with detailed specifications
+- Set deadlines and automatically track tender lifecycle
+- Receive and manage quotations from multiple traders
+- Compare quotations side-by-side
+- Track tender status (OPEN, EVALUATION, AWARDED, CLOSED)
+- Award contracts and notify winners
+- Dashboard with tender analytics and insights
+- Customizable notification preferences
 
 ### For Traders/Contractors
-- ✅ Browse available tenders in real-time
-- ✅ Filter tenders by category, deadline, status
-- ✅ Submit competitive quotations for tenders
-- ✅ Track quotation submission status
-- ✅ View bid history and performance metrics
-- ✅ Manage professional profile
-- ✅ Receive notifications on tender updates
+
+- Browse available tenders in real-time
+- Filter tenders by category, deadline, and status
+- Submit competitive quotations for tenders
+- Track quotation submission status
+- View bid history and performance metrics
+- Manage professional profile
+- Receive notifications on tender updates
 
 ### System-Wide
-- ✅ JWT-based authentication with role-based access control
-- ✅ Redis caching for performance optimization
-- ✅ RESTful API with comprehensive endpoints
-- ✅ MongoDB for flexible data storage
-- ✅ Responsive UI with Tailwind CSS + Shadcn/ui
-- ✅ Microservices architecture (optional)
-- ✅ Docker containerization for easy deployment
-- ✅ Real-time data synchronization
+
+- JWT-based authentication with role-based access control
+- Redis caching for performance optimization
+- RESTful API with comprehensive endpoints
+- MongoDB for flexible data storage
+- Responsive UI with Tailwind CSS and Shadcn/ui
+- Microservices architecture (optional)
+- Docker containerization for easy deployment
+- Real-time data synchronization
 
 ---
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    FRONTEND (React + Vite)                  │
-│              (Org Dashboard | Trader Dashboard)              │
-└────────────────────┬────────────────────────────────────────┘
-                     │ (HTTP/REST)
-┌────────────────────▼────────────────────────────────────────┐
-│              BACKEND API (Express.js)                        │
-│  ┌──────────────┐  ┌─────────────┐  ┌──────────────┐       │
-│  │ Auth Routes  │  │Tender Routes│  │Quotation API │       │
-│  └──────────────┘  └─────────────┘  └──────────────┘       │
-└────────────┬─────────────────────────────────┬──────────────┘
-             │                                 │
-   ┌─────────▼────────┐         ┌──────────────▼────────┐
-   │   MongoDB        │         │   Redis Cache         │
-   │  (Primary Store) │         │  (Session/Cache)      │
-   └──────────────────┘         └───────────────────────┘
++-------------------------------------------------------------+
+|                    FRONTEND (React + Vite)                  |
+|              (Org Dashboard | Trader Dashboard)              |
++--------------------+----------------------------------------+
+                     | (HTTP/REST)
++--------------------v----------------------------------------+
+|              BACKEND API (Express.js)                        |
+|  +--------------+  +-------------+  +--------------+       |
+|  | Auth Routes  |  |Tender Routes|  |Quotation API |       |
+|  +--------------+  +-------------+  +--------------+       |
++------------+---------------------------------+--------------+
+             |                                 |
+   +---------v--------+         +--------------v--------+
+   |   MongoDB        |         |   Redis Cache         |
+   |  (Primary Store) |         |  (Session/Cache)      |
+   +------------------+         +-----------------------+
 
 OPTIONAL MICROSERVICES LAYER:
-  ├── Auth Service (Authentication & Authorization)
-  ├── Tender Service (Tender Management)
-  └── Quotation Service (Quotation Management)
+  |- Auth Service (Authentication & Authorization)
+  |- Tender Service (Tender Management)
+  +- Quotation Service (Quotation Management)
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
+
 | Layer | Technologies |
 |-------|--------------|
-| **Framework** | React 18.3.1 |
-| **Build Tool** | Vite 5.4.19 |
-| **Language** | TypeScript 5.8 |
-| **Styling** | Tailwind CSS 3.4 + Shadcn/ui |
-| **State Management** | React Query (TanStack Query) 5.83 |
-| **Routing** | React Router DOM 6.30 |
-| **Forms** | React Hook Form 7.61 + Zod validation |
-| **UI Components** | Radix UI (Headless components) |
-| **Icons** | Lucide React 0.462 |
-| **Testing** | Vitest 3.2.4 |
-| **Charts** | Recharts 2.15.4 |
+| Framework | React 18.3.1 |
+| Build Tool | Vite 5.4.19 |
+| Language | TypeScript 5.8 |
+| Styling | Tailwind CSS 3.4 + Shadcn/ui |
+| State Management | React Query (TanStack Query) 5.83 |
+| Routing | React Router DOM 6.30 |
+| Forms | React Hook Form 7.61 + Zod validation |
+| UI Components | Radix UI (Headless components) |
+| Icons | Lucide React 0.462 |
+| Testing | Vitest 3.2.4 |
+| Charts | Recharts 2.15.4 |
 
 ### Backend
+
 | Layer | Technologies |
 |-------|--------------|
-| **Runtime** | Node.js |
-| **Framework** | Express.js 5.2.1 |
-| **Language** | JavaScript (ES6+) |
-| **Database** | MongoDB 9.2.1 (Mongoose) |
-| **Cache** | Redis 5.11.0 |
-| **Authentication** | JWT (jsonwebtoken 9.0.3) |
-| **Password Hashing** | Bcrypt 6.0.0 |
-| **Middleware** | CORS 2.8.6 |
-| **Environment** | Dotenv 17.3.1 |
+| Runtime | Node.js |
+| Framework | Express.js 5.2.1 |
+| Language | JavaScript (ES6+) |
+| Database | MongoDB 9.2.1 (Mongoose) |
+| Cache | Redis 5.11.0 |
+| Authentication | JWT (jsonwebtoken 9.0.3) |
+| Password Hashing | Bcrypt 6.0.0 |
+| Middleware | CORS 2.8.6 |
+| Environment | Dotenv 17.3.1 |
 
 ### DevOps
+
 | Tool | Purpose |
 |------|---------|
-| **Docker** | Containerization |
-| **Docker Compose** | Multi-container orchestration |
-| **Node** | Runtime environment |
+| Docker | Containerization |
+| Docker Compose | Multi-container orchestration |
+| Node | Runtime environment |
 
 ---
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (v18+) and **npm** (v9+) or **yarn**
-- **MongoDB** (v4.4+) - Local or Atlas URI
-- **Redis** (v6.0+) - For caching
-- **Docker** & **Docker Compose** (optional, for containerized deployment)
+- **Node.js** (v18+) and **npm** (v9+) or yarn
+- **MongoDB** (v4.4+) — local or Atlas URI
+- **Redis** (v6.0+) — for caching
+- **Docker** and **Docker Compose** (optional, for containerized deployment)
 - **Git**
 
 ### Quick Check
+
 ```bash
 node --version    # Should be v18+
 npm --version     # Should be v9+
@@ -157,9 +165,10 @@ docker --version  # Optional: Should be 20.10+
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/yourusername/tenderflow.git
 cd tenderflow
@@ -168,18 +177,21 @@ cd tenderflow
 ### 2. Backend Setup
 
 #### Install Dependencies
+
 ```bash
 cd backend-tenderflow
 npm install
 ```
 
 #### Create Environment File
+
 ```bash
 cp .env.example .env
 # OR create manually with the following:
 ```
 
-**`.env` file (Backend)**
+**.env file (Backend)**
+
 ```env
 # Server Configuration
 BE_PORT=3000
@@ -203,14 +215,14 @@ NODE_ENV=development
 ```
 
 #### Verify MongoDB Connection
+
 ```bash
-# Test connection to MongoDB
 mongosh "mongodb://localhost:27017"
 ```
 
 #### Verify Redis Connection
+
 ```bash
-# Test connection to Redis
 redis-cli ping
 # Should return: PONG
 ```
@@ -218,6 +230,7 @@ redis-cli ping
 ### 3. Frontend Setup
 
 #### Install Dependencies
+
 ```bash
 cd ../tenderflow-pro
 npm install
@@ -226,11 +239,13 @@ bun install  # If using Bun package manager
 ```
 
 #### Create Environment File
+
 ```bash
 touch .env.local
 ```
 
-**`.env.local` file (Frontend)**
+**.env.local file (Frontend)**
+
 ```env
 # API Configuration
 VITE_API_URL=http://localhost:3000
@@ -240,6 +255,7 @@ VITE_ENV=development
 ```
 
 ### 4. Verify Installation
+
 ```bash
 # Backend: Test API endpoint
 npm run dev  # Start backend
@@ -251,7 +267,7 @@ npm run build
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 tenderflow/
@@ -274,91 +290,91 @@ tenderflow/
 │   ├── utils/
 │   │   └── generateToken.js           # JWT token generation
 │   ├── server.js                      # Express app initialization
-│   ├── package.json                   # Dependencies
-│   └── Dockerfile                     # Docker configuration
+│   ├── package.json
+│   └── Dockerfile
 │
 ├── microservices/                     # Optional Microservices (Scalable)
-│   ├── auth-service/                  # Independent auth service
-│   ├── tender-service/                # Independent tender service
-│   └── quotation-service/             # Independent quotation service
+│   ├── auth-service/
+│   ├── tender-service/
+│   └── quotation-service/
 │
 ├── tenderflow-pro/                    # React + Vite Frontend
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── ui/                    # Shadcn UI components (50+)
 │   │   │   ├── layouts/
-│   │   │   │   ├── OrgSidebar.tsx      # Organization sidebar
-│   │   │   │   ├── TraderSidebar.tsx   # Trader sidebar
-│   │   │   │   └── TopNavbar.tsx       # Navigation bar
+│   │   │   │   ├── OrgSidebar.tsx
+│   │   │   │   ├── TraderSidebar.tsx
+│   │   │   │   └── TopNavbar.tsx
 │   │   │   ├── org/
-│   │   │   │   └── ComparisonModal.tsx # Compare quotations
+│   │   │   │   └── ComparisonModal.tsx
 │   │   │   ├── trader/
 │   │   │   │   └── SubmitQuotationModal.tsx
-│   │   │   ├── ProtectedRoute.tsx      # Route protection HOC
-│   │   │   └── ...
+│   │   │   └── ProtectedRoute.tsx
 │   │   ├── pages/
-│   │   │   ├── Landing.tsx            # Home page
+│   │   │   ├── Landing.tsx
 │   │   │   ├── auth/
 │   │   │   │   ├── Login.tsx
 │   │   │   │   └── Register.tsx
 │   │   │   ├── org/
-│   │   │   │   ├── OrgDashboard.tsx    # Org dashboard with stats
-│   │   │   │   ├── CreateTender.tsx    # Tender creation form
-│   │   │   │   ├── MyTenders.tsx       # List organization tenders
-│   │   │   │   ├── TenderDetails.tsx   # Tender details & quotations
+│   │   │   │   ├── OrgDashboard.tsx
+│   │   │   │   ├── CreateTender.tsx
+│   │   │   │   ├── MyTenders.tsx
+│   │   │   │   ├── TenderDetails.tsx
 │   │   │   │   ├── QuotationsReceived.tsx
 │   │   │   │   └── OrgSettings.tsx
 │   │   │   ├── trader/
 │   │   │   │   ├── TraderDashboard.tsx
-│   │   │   │   ├── BrowseTenders.tsx   # Search & filter tenders
+│   │   │   │   ├── BrowseTenders.tsx
 │   │   │   │   ├── TraderTenderDetails.tsx
-│   │   │   │   ├── MyQuotations.tsx    # Submitted quotations
+│   │   │   │   ├── MyQuotations.tsx
 │   │   │   │   └── TraderProfile.tsx
 │   │   │   └── NotFound.tsx
 │   │   ├── contexts/
-│   │   │   └── AuthContext.js         # Auth state management
+│   │   │   └── AuthContext.js
 │   │   ├── hooks/
 │   │   │   ├── use-toast.ts
 │   │   │   └── use-mobile.tsx
 │   │   ├── types/
-│   │   │   └── index.ts               # TypeScript type definitions
+│   │   │   └── index.ts
 │   │   ├── lib/
-│   │   │   └── utils.ts               # Utility functions
+│   │   │   └── utils.ts
 │   │   ├── data/
-│   │   │   └── mockData.ts            # Mock data for development
+│   │   │   └── mockData.ts
 │   │   ├── layouts/
 │   │   │   ├── OrgLayout.tsx
 │   │   │   └── TraderLayout.tsx
-│   │   ├── App.tsx                    # Main app routing
-│   │   ├── main.tsx                   # Entry point
+│   │   ├── App.tsx
+│   │   ├── main.tsx
 │   │   └── index.css
 │   ├── public/
 │   ├── index.html
-│   ├── vite.config.ts                 # Vite configuration
-│   ├── tailwind.config.ts             # Tailwind CSS config
+│   ├── vite.config.ts
+│   ├── tailwind.config.ts
 │   ├── tsconfig.json
 │   ├── package.json
-│   ├── Dockerfile
-│   └── ...
+│   └── Dockerfile
 │
-├── docker-compose.yml                 # Multi-container setup
+├── docker-compose.yml
 ├── .gitignore
-└── README.md                          # This file!
+└── README.md
 ```
 
 ---
 
-## 🔌 API Documentation
+## API Documentation
 
 ### Base URL
+
 ```
-Local: http://localhost:3000
+Local:      http://localhost:3000
 Production: https://api.tenderflow.com
 ```
 
 ### Authentication Endpoints
 
 #### Register User
+
 ```http
 POST /auth/register
 Content-Type: application/json
@@ -367,7 +383,7 @@ Content-Type: application/json
   "name": "John Doe",
   "email": "john@example.com",
   "password": "SecurePassword123!",
-  "role": "ORG"              # OR "TRADER" or "ADMIN"
+  "role": "ORG"   // OR "TRADER" or "ADMIN"
 }
 
 Response (201):
@@ -386,6 +402,7 @@ Response (201):
 ```
 
 #### Login
+
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -407,6 +424,7 @@ Response (200):
 ```
 
 #### Get Current User
+
 ```http
 GET /auth/me
 Authorization: Bearer <token>
@@ -421,6 +439,7 @@ Response (200):
 ### Tender Endpoints
 
 #### Create Tender (ORG only)
+
 ```http
 POST /tender/create
 Authorization: Bearer <token>
@@ -451,6 +470,7 @@ Response (201):
 ```
 
 #### Get All Tenders (with filters)
+
 ```http
 GET /tender/all?status=OPEN&category=IT Services&page=1&limit=10
 Authorization: Bearer <token>
@@ -466,6 +486,7 @@ Response (200):
 ```
 
 #### Get Tender by ID
+
 ```http
 GET /tender/:id
 Authorization: Bearer <token>
@@ -478,13 +499,14 @@ Response (200):
 ```
 
 #### Update Tender Status
+
 ```http
 PATCH /tender/:id/status
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "status": "EVALUATION"  # OPEN, EVALUATION, AWARDED, CLOSED
+  "status": "EVALUATION"  // OPEN, EVALUATION, AWARDED, CLOSED
 }
 
 Response (200):
@@ -496,6 +518,7 @@ Response (200):
 ```
 
 #### Delete Tender
+
 ```http
 DELETE /tender/:id
 Authorization: Bearer <token>
@@ -510,6 +533,7 @@ Response (200):
 ### Quotation Endpoints
 
 #### Submit Quotation (TRADER only)
+
 ```http
 POST /quotation/submit
 Authorization: Bearer <token>
@@ -540,6 +564,7 @@ Response (201):
 ```
 
 #### Get Quotations for Tender
+
 ```http
 GET /quotation/tender/:tenderId
 Authorization: Bearer <token>
@@ -552,6 +577,7 @@ Response (200):
 ```
 
 #### Get My Quotations (TRADER)
+
 ```http
 GET /quotation/my-quotations
 Authorization: Bearer <token>
@@ -564,6 +590,7 @@ Response (200):
 ```
 
 #### Award Quotation (ORG only)
+
 ```http
 PATCH /quotation/:id/award
 Authorization: Bearer <token>
@@ -577,6 +604,7 @@ Response (200):
 ```
 
 #### Reject Quotation
+
 ```http
 PATCH /quotation/:id/reject
 Authorization: Bearer <token>
@@ -590,9 +618,10 @@ Response (200):
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
-### Backend (`.env`)
+### Backend (.env)
+
 ```env
 # Server
 BE_PORT=3000
@@ -614,7 +643,8 @@ JWT_EXPIRY=7d
 CORS_ORIGIN=http://localhost:5173
 ```
 
-### Frontend (`.env.local`)
+### Frontend (.env.local)
+
 ```env
 # API
 VITE_API_URL=http://localhost:3000
@@ -623,29 +653,32 @@ VITE_ENV=development
 
 ---
 
-## 🚀 Running the Application
+## Running the Application
 
 ### Option 1: Local Development (Recommended)
 
-#### Terminal 1 - Start MongoDB
+**Terminal 1 — Start MongoDB**
+
 ```bash
-# If using local MongoDB
+# Local MongoDB
 mongod
 
-# OR if using Docker
+# OR via Docker
 docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
 
-#### Terminal 2 - Start Redis
+**Terminal 2 — Start Redis**
+
 ```bash
-# If using local Redis
+# Local Redis
 redis-server
 
-# OR if using Docker
+# OR via Docker
 docker run -d -p 6379:6379 --name redis redis:latest
 ```
 
-#### Terminal 3 - Start Backend
+**Terminal 3 — Start Backend**
+
 ```bash
 cd backend-tenderflow
 npm install
@@ -653,7 +686,8 @@ npm run dev
 # Server running at http://localhost:3000
 ```
 
-#### Terminal 4 - Start Frontend
+**Terminal 4 — Start Frontend**
+
 ```bash
 cd tenderflow-pro
 npm install
@@ -661,9 +695,9 @@ npm run dev
 # Frontend running at http://localhost:5173
 ```
 
-**Access the Application**: Open browser to `http://localhost:5173`
+Open your browser at `http://localhost:5173`.
 
-### Option 2: Using Docker Compose (Recommended for Production)
+### Option 2: Docker Compose
 
 ```bash
 # Build and start all services
@@ -679,7 +713,8 @@ docker-compose down
 docker-compose down -v
 ```
 
-**Services will be running on:**
+Services will be available at:
+
 - Frontend: `http://localhost:5173`
 - Backend API: `http://localhost:3000`
 - MongoDB: `localhost:27017`
@@ -687,14 +722,16 @@ docker-compose down -v
 
 ### Option 3: Production Build
 
-#### Backend
+**Backend**
+
 ```bash
 cd backend-tenderflow
 npm install
 npm start
 ```
 
-#### Frontend
+**Frontend**
+
 ```bash
 cd tenderflow-pro
 npm install
@@ -704,9 +741,10 @@ npm run preview
 
 ---
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ### Build Custom Docker Images
+
 ```bash
 # Build backend image
 cd backend-tenderflow
@@ -717,19 +755,12 @@ cd ../tenderflow-pro
 docker build -t tenderflow-frontend:1.0.0 .
 ```
 
-### Docker Compose Configuration
-The project includes a `docker-compose.yml` with:
-- Frontend service (Vite)
-- Backend service (Express)
-- MongoDB service
-- Redis service
+The `docker-compose.yml` file covers the frontend, backend, MongoDB, and Redis services together.
 
 ### Deploy to Production
-```bash
-# Pull latest code
-git pull origin main
 
-# Build and deploy
+```bash
+git pull origin main
 docker-compose -f docker-compose.yml up -d --build
 
 # View logs
@@ -739,9 +770,10 @@ docker-compose logs -f frontend
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ### User Model
+
 ```javascript
 {
   _id: ObjectId,
@@ -755,6 +787,7 @@ docker-compose logs -f frontend
 ```
 
 ### Tender Model
+
 ```javascript
 {
   _id: ObjectId,
@@ -770,6 +803,7 @@ docker-compose logs -f frontend
 ```
 
 ### Quotation Model
+
 ```javascript
 {
   _id: ObjectId,
@@ -786,321 +820,280 @@ docker-compose logs -f frontend
 
 ---
 
-## 🔐 Authentication & Authorization
+## Authentication & Authorization
 
 ### JWT Flow
-1. User registers/logs in
-2. Backend generates JWT token (valid for 7 days)
-3. Frontend stores token in localStorage
-4. Token sent in `Authorization: Bearer <token>` header
-5. Middleware validates token on protected routes
+
+1. User registers or logs in.
+2. Backend generates a JWT token valid for 7 days.
+3. Frontend stores the token in localStorage.
+4. Token is sent via the `Authorization: Bearer <token>` header on every protected request.
+5. Middleware validates the token before granting access.
 
 ### Role-Based Access Control (RBAC)
-```javascript
-// Three roles with distinct permissions:
 
+```
 ORG (Organization)
-├── Create tenders
-├── View their own tenders
-├── Manage tender lifecycle
-└── Evaluate & award quotations
+  |- Create tenders
+  |- View their own tenders
+  |- Manage tender lifecycle
+  +- Evaluate and award quotations
 
 TRADER (Contractor/Supplier)
-├── Browse all open tenders
-├── Submit quotations
-├── View their own quotations
-└── Track bid status
+  |- Browse all open tenders
+  |- Submit quotations
+  |- View their own quotations
+  +- Track bid status
 
 ADMIN
-├── Manage all users
-├── Monitor system activity
-└── Generate reports
+  |- Manage all users
+  |- Monitor system activity
+  +- Generate reports
 ```
 
 ### Middleware Protection
-```javascript
-// Protected endpoints require:
-1. Valid JWT token in Authorization header
-2. Correct user role (checked by role middleware)
-3. Ownership verification for resource access
-```
+
+Protected endpoints require a valid JWT token in the Authorization header, the correct user role checked by the role middleware, and ownership verification for resource-level access.
 
 ---
 
-## 🎯 Key Features & Workflows
+## Key Features & Workflows
 
-### Tender Lifecycle Workflow
+### Tender Lifecycle
+
 ```
 OPEN
-  ↓ (Traders submit quotations)
+  |  (Traders submit quotations)
 EVALUATION
-  ↓ (Organization reviews & compares)
+  |  (Organization reviews and compares)
 AWARDED
-  ↓ (Contract awarded to winner)
+  |  (Contract awarded to winner)
 CLOSED
 ```
 
-### Tender Submission Workflow (Org)
-1. Organization logs in
-2. Creates tender with title, description, category, deadline
-3. Tender published as OPEN
-4. Traders can see it in browse tenders
-5. Org views received quotations
-6. Org can compare quotations side-by-side
-7. Org awards quotation (changes status to AWARDED)
-8. Org closes tender
+### Tender Submission Workflow (Organization)
+
+1. Organization logs in.
+2. Creates a tender with title, description, category, and deadline.
+3. Tender is published as OPEN.
+4. Traders can discover it in the browse view.
+5. Organization reviews received quotations.
+6. Organization compares quotations side-by-side.
+7. Organization awards a quotation, updating the status to AWARDED.
+8. Organization closes the tender.
 
 ### Quotation Submission Workflow (Trader)
-1. Trader logs in
-2. Browses available (OPEN) tenders
-3. Filters by category, deadline, etc.
-4. Clicks on tender to view details
-5. Submits quotation with amount, description, delivery days
-6. Quotation shows as PENDING
-7. Waits for organization to award or reject
-8. Tracks submission in "My Quotations"
 
-### Dashboard Features
-**Org Dashboard:**
-- Total tenders created
-- Active tenders count
-- Total quotations received
-- Pending review quotations
-- Recently created tenders
+1. Trader logs in.
+2. Browses available OPEN tenders.
+3. Filters by category, deadline, and other criteria.
+4. Views tender details.
+5. Submits a quotation with amount, description, and delivery days.
+6. Quotation appears as PENDING.
+7. Awaits the organization's decision.
+8. Tracks all submissions under "My Quotations."
 
-**Trader Dashboard:**
-- Browsable tenders count
-- Submitted quotations
-- Pending quotations
-- Awarded quotations
-- Rejection rate
+### Dashboard Highlights
+
+**Organization Dashboard** shows total tenders created, active tenders, total quotations received, quotations pending review, and recently created tenders.
+
+**Trader Dashboard** shows browsable tenders, submitted quotations, pending quotations, awarded quotations, and rejection rate.
 
 ---
 
-## 💻 Development Guide
+## Development Guide
 
 ### Running Tests
+
 ```bash
 # Frontend tests
 cd tenderflow-pro
-npm run test           # Run tests once
-npm run test:watch    # Watch mode
+npm run test           # Run once
+npm run test:watch     # Watch mode
 
 # Backend tests
 cd backend-tenderflow
-npm run test          # Coming soon
+npm run test           # Coming soon
 ```
 
 ### Code Style & Linting
+
 ```bash
-# Frontend linting
 cd tenderflow-pro
 npm run lint
 
-# Fix linting issues
+# Fix linting issues automatically
 npx eslint . --fix
 ```
 
 ### Adding New Features
 
-#### Backend - New Route
-1. Create controller in appropriate file
-2. Add route in `routes/` folder
-3. Add middleware if needed
-4. Test with Postman/cURL
+**Backend — New Route**
+1. Create a controller in the appropriate file.
+2. Add the route under `routes/`.
+3. Add any required middleware.
+4. Test with Postman or cURL.
 
-#### Frontend - New Page
-1. Create component in `src/pages/`
-2. Add route in `App.tsx`
-3. Create sidebar link if needed
-4. Test navigation
+**Frontend — New Page**
+1. Create a component under `src/pages/`.
+2. Register the route in `App.tsx`.
+3. Add a sidebar link if needed.
+4. Test navigation.
 
-#### Database - New Field
-1. Update Mongoose schema in `models/`
-2. Create migration script
-3. Update API endpoints
-4. Update frontend forms
+**Database — New Field**
+1. Update the Mongoose schema in `models/`.
+2. Write a migration script.
+3. Update the relevant API endpoints.
+4. Update any frontend forms consuming that field.
 
 ### Debug Mode
+
 ```bash
-# Backend - Verbose logging
+# Backend verbose logging
 DEBUG=tenderflow:* npm start
 
-# Frontend - Dev tools
-Open Chrome DevTools (F12)
-Network tab to inspect API calls
+# Frontend: open Chrome DevTools (F12) and use the Network tab to inspect API calls
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### MongoDB Connection Issues
+
 ```bash
-# Check if MongoDB is running
 mongosh
 
-# If not running locally, use MongoDB Atlas
-# Update DB_URI in .env to your Atlas connection string
+# If connecting remotely, update DB_URI in .env to your Atlas connection string
 ```
 
 ### Redis Connection Issues
+
 ```bash
-# Check Redis status
 redis-cli ping
 # Should return: PONG
 
-# If Redis not running
+# Start Redis if not running
 redis-server
 
-# Or use Docker
+# Or via Docker
 docker run -d -p 6379:6379 redis:latest
 ```
 
 ### Port Already in Use
+
 ```bash
-# Kill process on port 3000 (backend)
+# Find and kill process on port 3000
 lsof -i :3000
 kill -9 <PID>
 
-# Kill process on port 5173 (frontend)
+# Find and kill process on port 5173
 lsof -i :5173
 kill -9 <PID>
 
-# Or use different ports in .env
+# Alternatively, change the port in .env
 ```
 
-### Token Expiration Issues
-- Tokens expire after 7 days
-- Solution: User must login again
-- Future: Implement refresh token mechanism
+### Token Expiration
+
+Tokens expire after 7 days. The user needs to log in again to get a new one. A refresh token mechanism is planned for a future release.
 
 ### CORS Errors
-```bash
-# Ensure backend CORS_ORIGIN matches frontend URL
-# Backend .env: CORS_ORIGIN=http://localhost:5173
-# Restart backend after changing
-```
+
+Make sure `CORS_ORIGIN` in the backend `.env` matches your frontend URL exactly (e.g., `http://localhost:5173`). Restart the backend after making changes.
 
 ### Build Failures
+
 ```bash
-# Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
 npm install
 
-# Clear cache
+# Clear npm cache if needed
 npm cache clean --force
 ```
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-### Steps to Contribute
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Write/update tests
-5. Commit changes (`git commit -m 'Add amazing feature'`)
-6. Push to branch (`git push origin feature/amazing-feature`)
-7. Open Pull Request
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature`.
+3. Make your changes.
+4. Write or update tests.
+5. Commit with a meaningful message: `git commit -m 'Add your feature'`.
+6. Push the branch: `git push origin feature/your-feature`.
+7. Open a Pull Request.
 
 ### Code Standards
-- Follow existing code style
-- Write meaningful commit messages
-- Add comments for complex logic
-- Update documentation
-- Test thoroughly before submitting PR
+
+Follow the existing code style, write meaningful commit messages, add comments for complex logic, update the documentation, and test thoroughly before submitting a PR.
 
 ### Reporting Issues
-- Check existing issues first
-- Provide detailed description
-- Include error messages & logs
-- Provide reproduction steps
-- Mention your environment (OS, Node version, etc.)
+
+Check existing issues before opening a new one. When filing a bug report, include a clear description, error messages and logs, reproduction steps, and your environment details (OS, Node version, etc.).
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
-## 👥 Authors & Acknowledgments
+## Authors & Acknowledgments
 
-- **Project Creator**: TenderFlow Team
-- **Contributors**: Open to community contributions
+Built by the TenderFlow team, open to community contributions.
 
-### Tech Stack Credits
-- React & Vite Team
-- Shadcn/ui - Beautiful UI components
-- Express.js community
-- Tailwind CSS team
+Thanks to the React and Vite teams, the Shadcn/ui project, the Express.js community, and the Tailwind CSS team.
 
 ---
 
-## 🚀 Roadmap
+## Roadmap
 
-### Upcoming Features (v2.0)
-- [ ] Email notifications for tender updates
-- [ ] SMS alerts for urgent deadlines
-- [ ] Advance payment gateway integration
-- [ ] Digital signature for contracts
-- [ ] Analytics & reporting dashboard
-- [ ] Bulk tender import/export
-- [ ] Mobile app (iOS & Android)
-- [ ] Microservices deployment guide
-- [ ] API versioning (v2)
-- [ ] GraphQL support
-- [ ] Real-time chat between Org & Traders
-- [ ] Document storage & management
-- [ ] Compliance tracking & audit logs
+Planned for v2.0:
+
+- Email notifications for tender updates
+- SMS alerts for urgent deadlines
+- Payment gateway integration
+- Digital signature for contracts
+- Analytics and reporting dashboard
+- Bulk tender import/export
+- Mobile app (iOS and Android)
+- Microservices deployment guide
+- API versioning (v2)
+- GraphQL support
+- Real-time chat between organizations and traders
+- Document storage and management
+- Compliance tracking and audit logs
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 - **Email**: support@tenderflow.com
-- **Documentation**: [Full Docs](https://docs.tenderflow.com)
-- **Issues**: [GitHub Issues](https://github.com/tenderflow/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/tenderflow/discussions)
+- **Documentation**: https://docs.tenderflow.com
+- **Issues**: https://github.com/tenderflow/issues
+- **Discussions**: https://github.com/tenderflow/discussions
 
 ---
 
-## 🎉 Getting Started Quick Reference
+## Quick Start Reference
 
 ```bash
 # Clone
 git clone https://github.com/tenderflow/tenderflow.git && cd tenderflow
 
-# Backend Setup
+# Backend
 cd backend-tenderflow && npm install && npm run dev
 
-# Frontend Setup (new terminal)
+# Frontend (new terminal)
 cd tenderflow-pro && npm install && npm run dev
 
-# Access App
+# Access
 # Frontend: http://localhost:5173
-# API: http://localhost:3000
+# API:      http://localhost:3000
 
-# Test Login
-# Org Account: org@example.com / password
-# Trader Account: trader@example.com / password
+# Test accounts
+# Org:    org@example.com / password
+# Trader: trader@example.com / password
 ```
-
----
-
-**Last Updated**: January 2024
-**Version**: 1.0.0
-**Maintained By**: TenderFlow Team
-
-
-
-<div align="center">
-
-**⭐ If you find this project useful, please star it on GitHub!**
-
-[⬆ back to top](#-tenderflow---enterprise-tender-management-system)
-
-</div>
